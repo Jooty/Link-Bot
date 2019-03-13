@@ -51,5 +51,11 @@ namespace Link
         [Command("8ball")]
         public async Task Magic8Command([Remainder]string question = "")
             => MiscService.Magic8Service(Context);
+
+        [Command("invite")]
+        public async Task InviteCommand()
+        {
+            await Respond.SendResponse(Context, "https://discordapp.com/api/oauth2/authorize?client_id=401994184602681344&permissions=8&scope=bot");
+        }
     }
 }
