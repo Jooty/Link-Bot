@@ -201,6 +201,7 @@
     <Compile Include="Modules\Administration\Services\ChangeNameService.cs" />
     <Compile Include="Modules\Administration\Services\ClearService.cs" />
     <Compile Include="Modules\Administration\Services\BanService.cs" />
+    <Compile Include="Modules\Miscellaneous\HelpCommands.cs" />
     <Compile Include="Modules\Miscellaneous\Services\8BallService.cs" />
     <Compile Include="Modules\Administration\Services\MuteService.cs" />
     <Compile Include="Modules\Configuration\LogCommands.cs" />
