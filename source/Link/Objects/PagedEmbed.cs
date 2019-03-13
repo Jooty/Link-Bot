@@ -32,7 +32,7 @@ namespace Link
             embedName = embedTitle;
             var _embed = new EmbedBuilder()
                 .WithColor(Color.Blue)
-                .WithTitle(embedTitle);
+                .WithTitle($"{embedTitle} (1/{pages.Length})");
 
             embedPages = pages;
 
@@ -70,8 +70,7 @@ namespace Link
             if (reaction.User.Value != controller) return;
 
             var _embed = new EmbedBuilder()
-                .WithColor(Color.Blue)
-                .WithTitle(embedName);
+                .WithColor(Color.Blue);
 
             if (reaction.Emote.Equals(backEmoji))
             {
@@ -83,6 +82,8 @@ namespace Link
                 {
                     _embed.AddField(field.Key, field.Value);
                 }
+
+                _embed.Title = $"{embedName} ({currentPage + 1}/{embedPages.Length})";
 
                 await UpdateAsync(_embed.Build());
             }
@@ -96,6 +97,8 @@ namespace Link
                 {
                     _embed.AddField(field.Key, field.Value);
                 }
+
+                _embed.Title = $"{embedName} ({currentPage + 1}/{embedPages.Length})";
 
                 await UpdateAsync(_embed.Build());
             }
