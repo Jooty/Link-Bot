@@ -10,6 +10,13 @@ namespace Link
 {
     public class RandomCommands : ModuleBase<SocketCommandContext>
     {
+        [Command("ping")]
+        [Summary("Pings the bot.")]
+        public async Task PingCommand()
+        {
+            await Respond.SendResponse(Context, $"Pong! `{Context.Client.Latency}`");
+        }
+
         [Command("roll")]
         [Summary("Roll a dice in D&D style. Example: `1d20`")]
         public async Task RollCommand(string query)
