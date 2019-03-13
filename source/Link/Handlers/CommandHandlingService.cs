@@ -13,12 +13,11 @@ namespace Link
 {
     public class CommandHandlingService
     {
+        public static CommandService commands;
         private DiscordSocketClient client;
-        private CommandService commands;
 
         public CommandHandlingService(DiscordSocketClient _client) =>
             InitializeAsync(_client).GetAwaiter().GetResult();
-
 
         public async Task InitializeAsync(DiscordSocketClient _client)
         {
