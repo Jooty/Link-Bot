@@ -204,7 +204,7 @@
     <Compile Include="Modules\Miscellaneous\Services\8BallService.cs" />
     <Compile Include="Modules\Administration\Services\MuteService.cs" />
     <Compile Include="Modules\Configuration\LogCommands.cs" />
-    <Compile Include="Modules\DeveloperCommands.cs" />
+    <Compile Include="Modules\Administration\DeveloperCommands.cs" />
     <Compile Include="Modules\Miscellaneous\RandomCommands.cs" />
     <Compile Include="Modules\Administration\ClearCommands.cs" />
     <Compile Include="Objects\GuildConfig.cs" />
@@ -218,6 +218,7 @@
     <Compile Include="Services\ConfirmationService.cs" />
     <Compile Include="Services\Database.cs" />
     <Compile Include="Services\LogService.cs" />
+    <Compile Include="Objects\PagedEmbed.cs" />
     <Compile Include="Services\Parse.cs" />
     <Compile Include="Services\Respond.cs" />
   </ItemGroup>
