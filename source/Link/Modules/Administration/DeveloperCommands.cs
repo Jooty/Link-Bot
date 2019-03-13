@@ -19,7 +19,7 @@ using PastebinAPI;
 namespace Link
 {
     [RequireDeveloper]
-    public class DeveloperCommands : ModuleBase<SocketCommandContext>
+    public class DeveloperCommands
     {
         [Group("Database")]
         public class DeveloperDatabaseCommands : ModuleBase<SocketCommandContext>
