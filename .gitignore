@@ -11,6 +11,7 @@
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
+source/Link/Resources/token.txt
 
 # Build results
 [Dd]ebug/
@@ -329,3 +330,5 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+source/Link/Resources/token.txt
+source/Link/Resources/token.txt
