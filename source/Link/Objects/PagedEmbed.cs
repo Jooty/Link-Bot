@@ -53,12 +53,16 @@ namespace Link
 
         private void SetupReactions()
         {
+            if (embedPages.Count() == 1) return;
+
             myEmbedMessage.AddReactionAsync(backEmoji);
             myEmbedMessage.AddReactionAsync(forwardEmoji);
         }
 
         private void SetupEvents()
         {
+            if (embedPages.Count() == 1) return;
+
             var _client = Program.client;
 
             _client.ReactionAdded += ReactionAdded;
