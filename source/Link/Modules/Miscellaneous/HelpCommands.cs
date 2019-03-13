@@ -12,6 +12,7 @@ namespace Link
     public class HelpCommands : ModuleBase<SocketCommandContext>
     {
         [Command("help")]
+        [Summary(".. This command.")]
         public async Task HelpCommand(string module = "")
         {
             if (module == "")

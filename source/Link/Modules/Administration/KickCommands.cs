@@ -15,6 +15,7 @@ namespace Link
     public class KickCommands : ModuleBase<SocketCommandContext>
     {
         [Command("kick")]
+        [Summary("Kicks a user from the guild.")]
         public async Task KickCommand([RequireHierarchy]IUser user, string reason = "")
         {
             // Create reason

@@ -16,27 +16,14 @@ namespace Link
     {
         [Command("clear")]
         [Alias("prune")]
+        [Summary("Clears a flat amount of messages in a channel.")]
         public async Task ClearCommand(int count)
             => ClearService.ClearCommandService(Context, count);
 
         [Command("clear")]
         [Alias("prune")]
+        [Summary("Clears an amount of messages from a certain user.")]
         public async Task ClearCommand(IUser user, int count)
             => ClearService.ClearCommandService(Context, user, count);
-
-        [Command("clear")]
-        [Alias("prune")]
-        public async Task ClearCommand(int count, IUser user)
-            => ClearService.ClearCommandService(Context, count, user);
-
-        [Command("clear")]
-        [Alias("prune")]
-        public async Task ClearCommand(ulong userId, int count)
-            => ClearService.ClearCommandService(Context, userId, count);
-
-        [Command("clear")]
-        [Alias("prune")]
-        public async Task ClearCommand(int count, ulong userId)
-            => ClearService.ClearCommandService(Context, count, userId);
     }
 }

@@ -15,6 +15,7 @@ namespace Link
     public class BanCommands : ModuleBase<SocketCommandContext>
     {
         [Command("ban")]
+        [Summary("Ban a user by mention or ID.")]
         public async Task BanCommand([RequireHierarchy]IUser user, string reason = "")
         {
             // Create reason
@@ -32,11 +33,13 @@ namespace Link
         }
 
         [Command("forceban")]
+        [Summary("Bans a user by ID. Works even when they're not in the server.")]
         public async Task ForcebanCommand(ulong id)
             => BanService.ForcebanUser(Context, id);
 
         [Command("pardon")]
         [Alias("unban")]
+        [Summary("Pardons a user.")]
         public async Task PardonCommand(ulong id)
             => BanService.PardonUser(Context, id);
     }

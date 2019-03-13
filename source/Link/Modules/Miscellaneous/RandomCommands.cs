@@ -11,6 +11,7 @@ namespace Link
     public class RandomCommands : ModuleBase<SocketCommandContext>
     {
         [Command("roll")]
+        [Summary("Roll a dice in D&D style. Example: `1d20`")]
         public async Task RollCommand(string query)
         {
             string[] _params = query.Split('d');
@@ -41,6 +42,7 @@ namespace Link
 
         [Command("coin")]
         [Alias("flipacoin", "coin", "flipcoin", "coinflip")]
+        [Summary("Flips a coin.")]
         public async Task FlipCoinCommand()
         {
             var _r = new Random().Next(0, 1);
@@ -49,10 +51,12 @@ namespace Link
         }
 
         [Command("8ball")]
+        [Summary("Ask the 8-ball a question.")]
         public async Task Magic8Command([Remainder]string question = "")
             => MiscService.Magic8Service(Context);
 
         [Command("invite")]
+        [Summary("Returns an invite to invite me anywhere.")]
         public async Task InviteCommand()
         {
             await Respond.SendResponse(Context, "https://discordapp.com/api/oauth2/authorize?client_id=401994184602681344&permissions=8&scope=bot");
