@@ -216,6 +216,30 @@ namespace Link
 
                 await ReplyAsync("", false, _embed);
             }
+
+            [Command("testembed")]
+            public async Task TestPagedEmbedCommand()
+            {
+                try
+                {
+                    var _page01 = new PagedEmbed.EmbedPage();
+                    _page01.Fields.Add("foo", "bar");
+                    var _page02 = new PagedEmbed.EmbedPage();
+                    _page02.Fields.Add("hello", "world");
+
+                    var _pages = new PagedEmbed.EmbedPage[]
+                    {
+                    _page01,
+                    _page02
+                    };
+
+                    new PagedEmbed(Context, _pages, "Hello World");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
         }
     }
 }
