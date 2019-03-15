@@ -30,7 +30,7 @@ namespace Link
             }
         }
 
-        private List<ulong> GetDeveloperIDs()
+        private static List<ulong> GetDeveloperIDs()
         {
             var _lines = File.ReadAllLines($"{Directory.GetCurrentDirectory()}/Resources/Developers.txt");
 
