@@ -30,26 +30,19 @@ namespace Link
                 [Command("guildconfig")]
                 public async Task CreateGuildConfig(ulong guildID = 0)
                 {
-                    try
+                    var _guild = guildID == 0
+                        ? Context.Guild
+                        : Context.Client.GetGuild(guildID);
+
+                    if (_guild == null)
                     {
-                        var _guild = guildID == 0
-                            ? Context.Guild
-                            : Context.Client.GetGuild(guildID);
-
-                        if (_guild == null)
-                        {
-                            await ReplyAsync($"I am not connected to any guild with the ID: `{guildID}`.");
-                            return;
-                        }
-
-                        Database.CreateDefaultGuildConfig(Context.Guild);
-
-                        await ReplyAsync($"Guild config created for guild with ID: `{_guild.Id}`");
+                        await ReplyAsync($"I am not connected to any guild with the ID: `{guildID}`.");
+                        return;
                     }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                    }
+
+                    Database.CreateDefaultGuildConfig(Context.Guild);
+
+                    await ReplyAsync($"Guild config created for guild with ID: `{_guild.Id}`");
                 }
             }
 

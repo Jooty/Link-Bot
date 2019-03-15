@@ -47,10 +47,13 @@ namespace Link
 
             await user.AddRoleAsync(_role);
 
-            await Respond.SendResponse(Context, $"Muted user **{user.Username}#{user.Discriminator}** for {time}.");
-
             var _time = Parse.Time(time);
+
+            if (_time.TotalDays == 0) _time = TimeSpan.FromMinutes(30);
+
             AddMuteToDatabase(user, _time);
+
+            await Respond.SendResponse(Context, $"Muted user **{user.Username}#{user.Discriminator}** for {time}.");
         }
 
         public static async Task Unmute(SocketCommandContext Context, IGuildUser user)

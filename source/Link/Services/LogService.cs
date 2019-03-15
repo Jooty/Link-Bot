@@ -27,7 +27,7 @@ namespace Link
 
             if (_record == null)
             {
-                Console.WriteLine($"Could not find guild configuration for guild: \"{guildId}\" when it was requested.");
+                LogService.Log.Warning($"Could not find guild configuration for guild: \"{guildId}\" when it was requested.");
                 return null;
             }
 
