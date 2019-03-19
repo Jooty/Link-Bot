@@ -11,44 +11,40 @@ using Discord.WebSocket;
 
 namespace Link
 {
-    public class AudioService
+    public static class AudioService
     {
         private static readonly List<AudioClientWrapper> Clients = new List<AudioClientWrapper>();
 
         public static async Task JoinAudio(SocketCommandContext Context)
         {
-            try
+            // Already in voice channel
+            if (Clients.Any(s => s.GuildId == Context.Guild.Id))
             {
-                // Already in voice channel
-                if (Clients.Any(s => s.GuildId == Context.Guild.Id)) return;
-
-                // Not in a voice channel
-                if ((Context.User as IVoiceState).VoiceChannel == null)
-                {
-                    await Respond.SendResponse(Context, "You are not in a voice channel!");
-                    return;
-                }
-
-                Clients.Add(new AudioClientWrapper(Context));
+                return;
             }
-            catch (Exception ex)
+
+            // Not in a voice channel
+            if ((Context.User as IVoiceState).VoiceChannel == null)
             {
-                Console.WriteLine(ex);
+                await Respond.SendResponse(Context, "You are not in a voice channel!");
+                return;
             }
+
+            Clients.Add(new AudioClientWrapper(Context));
         }
 
-        public static async Task AddToPlaylist(SocketCommandContext Context, string song)
+        public static async Task Play(SocketCommandContext Context, string song)
         {
+            if ((Context.User as IVoiceState).VoiceChannel == null)
+            {
+                await Respond.SendResponse(Context, "You are not in a voice channel!");
+                return;
+            }
+
             var _client = Clients.FirstOrDefault(s => s.GuildId == Context.Guild.Id);
 
             if (_client == null)
             {
-                if ((Context.User as IVoiceState).VoiceChannel == null)
-                {
-                    await Respond.SendResponse(Context, "You are not in a voice channel!");
-                    return;
-                }
-
                 Clients.Add(new AudioClientWrapper(Context));
             }
 

@@ -22,7 +22,7 @@ namespace Link
         [Command("play")]
         public async Task PlayCommand([Remainder]string song)
         {
-            AudioService.AddToPlaylist(Context, song);
+            AudioService.Play(Context, song);
         }
 
         [Command("skip")]

@@ -25,21 +25,17 @@ namespace Link
         public IAudioClient Client { get; set; }
         public ulong GuildId { get; set; }
         public AudioQueueEntry CurrentlyPlaying { get; set; }
-        public List<AudioQueueEntry> Queue = new List<AudioQueueEntry>();
         public IUserMessage PlayerMessage { get; set; }
 
-        private float playingVolume = 0.5f;
-        private int pause = 0;
+        private List<AudioQueueEntry> Queue = new List<AudioQueueEntry>();
+
+        private int pause;
 
         private readonly object cancelLock = new object();
 
-        private Emoji playEmoji = new Emoji("▶");
-        private Emoji pauseEmoji = new Emoji("⏸");
-        private Emoji ffEmoji = new Emoji("⏩");
-
         private SocketCommandContext context;
 
-        private bool calledForSkip = false;
+        private bool calledForSkip;
 
         private CancellationTokenSource cancelToken = new CancellationTokenSource();
         private CancellationTokenSource pauseToken = new CancellationTokenSource();

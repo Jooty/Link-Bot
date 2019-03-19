@@ -22,7 +22,7 @@ namespace Link
             {
                 var _msg = await Context.Channel.SendMessageAsync($"**{Context.User.Username}** | {response}");
 
-                await Task.Delay(time);
+                await Task.Delay(time).ConfigureAwait(false);
 
                 await _msg.DeleteAsync();
             }
