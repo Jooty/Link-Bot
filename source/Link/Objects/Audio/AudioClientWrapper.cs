@@ -43,8 +43,8 @@ namespace Link
         private Process ffmpeg;
 
         public AudioClientWrapper(SocketCommandContext Context) 
-            => Task.Run(() 
-                => Initialize(Context));
+            => Task.Run(()
+                => Initialize(Context).ConfigureAwait(false));
 
         public async Task Initialize(SocketCommandContext Context)
         {
@@ -52,38 +52,12 @@ namespace Link
             if (_voiceState.VoiceChannel == null) return;
 
             context = Context;
+            PlayerMessage = await SendMusicEmbedAsync(Context.Channel);
 
             Client = await _voiceState.VoiceChannel.ConnectAsync();
             GuildId = Context.Guild.Id;
-            PlayerMessage = await SendMusicEmbedAsync(Context.Channel);
 
             await PlayQueueAsync();
-        }
-
-        public async Task AddToQueue(SocketCommandContext Context, string song)
-        {
-            var _result = Search(song);
-            if (_result == null)
-            {
-                await Respond.SendResponse(context, $"Could not find a video by search: `{song}`");
-                return;
-            }
-
-            if (_result.Duration.Where(s => s == ':').Count() >= 2)
-            {
-                await Respond.SendResponse(context, "Sorry, videos over an hour long are currently not supported. ;(");
-                return;
-            }
-            else if (Queue.Count + 1 > 10)
-            {
-                await Respond.SendResponse(context, "Sorry, only 10 videoes in the queue at a time is supported. ;(");
-                return;
-            }
-
-            Queue.Add(new AudioQueueEntry(_result, Context.User));
-
-            await RefreshEmbedAsync();
-            Respond.SendTimedResponse(context, $"**{_result.Title}** added to the queue. Index: **{Queue.Count}**", TimeSpan.FromSeconds(5));
         }
 
         public void Skip()
@@ -147,6 +121,39 @@ namespace Link
             return !(ffmpeg == null || ffmpeg.HasExited);
         }
 
+        public async Task AddToQueue(SocketCommandContext Context, string song)
+        {
+            var _result = Search(song);
+            if (_result == null)
+            {
+                await Respond.SendResponse(context, $"Could not find a video by search: `{song}`");
+                return;
+            }
+
+            if (_result.Duration.Where(s => s == ':').Count() >= 2)
+            {
+                await Respond.SendResponse(context, "Sorry, videos over an hour long are currently not supported. ;(");
+                return;
+            }
+            else if (Queue.Count + 1 > 10)
+            {
+                await Respond.SendResponse(context, "Sorry, only 10 videoes in the queue at a time is supported. ;(");
+                return;
+            }
+
+            Queue.Add(new AudioQueueEntry(_result, Context.User));
+
+            if (Queue.Count == 1)
+            {
+                CurrentlyPlaying = Queue.First();
+            }
+
+            await RefreshEmbedAsync().ConfigureAwait(false);
+
+            await Respond.SendTimedResponse(context, $"**{_result.Title}** added to the queue. Index: **{Queue.Count}**", TimeSpan.FromSeconds(5))
+                .ConfigureAwait(false);
+        }
+
         public async Task Remove(SocketCommandContext Context, int index)
         {
             if (Queue[index] == null) return;
@@ -191,7 +198,7 @@ namespace Link
             }
         }
 
-        private async Task<IUserMessage> SendMusicEmbedAsync(ISocketMessageChannel channel)
+        public async Task<IUserMessage> SendMusicEmbedAsync(ISocketMessageChannel channel)
         {
             var _embed = new EmbedBuilder()
                 .WithColor(Color.Blue)

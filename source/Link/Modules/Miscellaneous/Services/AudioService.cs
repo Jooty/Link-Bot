@@ -45,23 +45,31 @@ namespace Link
 
             if (_client == null)
             {
-                Clients.Add(new AudioClientWrapper(Context));
-            }
+                var _new = new AudioClientWrapper(Context);
 
-            await _client.AddToQueue(Context, song);
+                await _new.AddToQueue(Context, song);
+
+                Clients.Add(_new);
+            }
+            else
+            {
+                await _client.AddToQueue(Context, song);
+            }
 
             await Context.Message.DeleteAsync();
         }
 
         public static async Task Skip(SocketCommandContext Context)
         {
-            if (!Clients.Any(s => s.GuildId == Context.Guild.Id))
+            var _client = Clients.FirstOrDefault(s => s.GuildId == Context.Guild.Id);
+
+            if (_client == null)
             {
                 await Respond.SendResponse(Context, "No player is connected to this guild.");
                 return;
             }
 
-            Clients.FirstOrDefault(s => s.GuildId == Context.Guild.Id).Skip();
+            _client.Skip();
         }
 
         public static async Task Pause(SocketCommandContext Context)
