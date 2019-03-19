@@ -24,7 +24,7 @@ namespace Link
 
         public async Task MainAsync()
         {
-            Config = JsonConvert.DeserializeObject<BotConfig>(@"Resources/Config.json");
+            Config = JsonConvert.DeserializeObject<BotConfig>(File.ReadAllText(@"Resources/Config.json"));
 
             LogService.Initialize();
 
