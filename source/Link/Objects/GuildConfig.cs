@@ -15,6 +15,7 @@ namespace Link
         public ulong  LogChannelID { get; set; }
         public bool   Log          { get; set; }
         public ulong  MutedRoleID  { get; set; }
+        public ulong  DJRoleID     { get; set; }
 
         public List<ulong> Forcebans { get; set; }
     }

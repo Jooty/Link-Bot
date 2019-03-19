@@ -110,6 +110,12 @@ namespace Link
             if (_mutedRole != null)
                 _mutedRoleID = _mutedRole.Id;
 
+            // Get DJ role
+            ulong _djRoleID = 0;
+            var _djRole = guild.Roles.FirstOrDefault(s => s.Name == "DJ");
+            if (_djRole != null)
+                _djRoleID = _djRole.Id;
+
             GuildConfig _config = new GuildConfig()
             {
                 ID = guild.Id,
@@ -119,6 +125,7 @@ namespace Link
                 LogChannelID = _logChannelID,
                 Log = false,
                 MutedRoleID = _mutedRoleID,
+                DJRoleID = _djRoleID,
                 Forcebans = new List<ulong>()
             };
 

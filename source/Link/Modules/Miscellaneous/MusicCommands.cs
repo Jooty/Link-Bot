@@ -26,12 +26,14 @@ namespace Link
         }
 
         [Command("skip")]
+        [RequireDJ]
         public async Task SkipCommand()
         {
             AudioService.Skip(Context);
         }
 
         [Command("pause")]
+        [RequireDJ]
         public async Task PauseCommand()
         {
             AudioService.Pause(Context);
@@ -39,12 +41,14 @@ namespace Link
 
         [Command("resume")]
         [Alias("unpause")]
+        [RequireDJ]
         public async Task ResumeCommand()
         {
             AudioService.Resume(Context);
         }
 
         [Command("remove")]
+        [RequireDJ]
         public async Task RemoveCommand(int index)
         {
             AudioService.Remove(Context, index);

@@ -202,6 +202,7 @@
   <ItemGroup>
     <Compile Include="Attributes\Parameter\RequireHierachyAttribute.cs" />
     <Compile Include="Attributes\RequireDeveloperAttribute.cs" />
+    <Compile Include="Attributes\RequireDJAttribute.cs" />
     <Compile Include="Attributes\RequireGuildOwnerAttribute.cs" />
     <Compile Include="Handlers\DiscordEventHandler.cs" />
     <Compile Include="Modules\Administration\BanCommands.cs" />
