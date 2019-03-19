@@ -9,6 +9,7 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reactive;
 using System.Reactive.Linq;
+using Newtonsoft.Json;
 
 namespace Link
 {
@@ -16,11 +17,15 @@ namespace Link
     {
         public static DiscordSocketClient client;
 
+        public static BotConfig Config;
+
         public static void Main(string[] args)
             => new Program().MainAsync().GetAwaiter().GetResult();
 
         public async Task MainAsync()
         {
+            Config = JsonConvert.DeserializeObject<BotConfig>(@"Resources/Config.json");
+
             LogService.Initialize();
 
             client = new DiscordSocketClient(new DiscordSocketConfig
@@ -42,29 +47,16 @@ namespace Link
             client.UserVoiceStateUpdated += DiscordEventHandler.UserVoiceStateUpdated;
             client.GuildMemberUpdated += DiscordEventHandler.GuildMemberUpdated;
 
-            // Begin invoke of database timers
+            // Begin invoke of database mute timers
             IDisposable databaseMuteTimers =
                 Observable
                     .Interval(TimeSpan.FromSeconds(1))
                     .Subscribe(x => MuteService.UpdateDatabaseTimers());
 
-            await client.LoginAsync(TokenType.Bot, GetToken());
+            await client.LoginAsync(TokenType.Bot, Config.Token);
             await client.StartAsync();
 
             await Task.Delay(-1);
-        }
-
-        private Task Client_GuildMemberUpdated(SocketGuildUser arg1, SocketGuildUser arg2)
-        {
-            throw new NotImplementedException();
-        }
-
-        private string GetToken()
-        {
-            using (StreamReader reader = new StreamReader($"{Directory.GetCurrentDirectory()}/Resources/token.txt"))
-            {
-                return reader.ReadToEnd();
-            }
         }
     }
 }

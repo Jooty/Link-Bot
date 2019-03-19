@@ -40,7 +40,7 @@ namespace Link
 
             int argPos = 0;
 
-            if (!(message.HasCharPrefix('>', ref argPos) ||
+            if (!(message.HasStringPrefix(Program.Config.Prefix, ref argPos) ||
                 message.HasMentionPrefix(client.CurrentUser, ref argPos)) ||
                 message.Author.IsBot)
                 return;

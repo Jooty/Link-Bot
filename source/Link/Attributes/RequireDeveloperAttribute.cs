@@ -20,7 +20,7 @@ namespace Link
                 return PreconditionResult.FromError("");
             }
 
-            if (GetDeveloperIDs().Any(s => s == _user.Id))
+            if (Program.Config.DeveloperIDs.Any(s => s == _user.Id))
             {
                 return PreconditionResult.FromSuccess();
             }
@@ -28,25 +28,6 @@ namespace Link
             {
                 return PreconditionResult.FromError("You must be a developer to use this command.");
             }
-        }
-
-        private static List<ulong> GetDeveloperIDs()
-        {
-            var _lines = File.ReadAllLines($"{Directory.GetCurrentDirectory()}/Resources/Developers.txt");
-
-            var _parsed = new List<ulong>();
-            foreach (var line in _lines)
-            {
-                ulong number;
-                bool __success = UInt64.TryParse(line, out number);
-
-                if (__success)
-                    _parsed.Add(number);
-                else
-                    continue;
-            }
-
-            return _parsed;
         }
     }
 }
