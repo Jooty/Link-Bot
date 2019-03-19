@@ -14,6 +14,8 @@ namespace Link
     [Group]
     public class ClearCommands : ModuleBase<SocketCommandContext>
     {
+        public ClearService ClearService { get; set; }
+
         [Command("clear")]
         [Alias("prune")]
         [Summary("Clears a flat amount of messages in a channel.")]

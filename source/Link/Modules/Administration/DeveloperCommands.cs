@@ -21,6 +21,8 @@ namespace Link
     [RequireDeveloper]
     public class DeveloperCommands
     {
+        public DeveloperService DevService { get; set; }
+
         [Group("Database")]
         public class DeveloperDatabaseCommands : ModuleBase<SocketCommandContext>
         {
@@ -144,7 +146,7 @@ namespace Link
                                          $"\nOwner: {_record.OwnerName}" +
                                          $"\nOwner ID: {_record.OwnerID}")
                         .AddField("Forcebans", _forcebans.ToString());
-                    await ReplyAsync("", false, _embed);
+                    await ReplyAsync("", false, _embed.Build());
                 }
             }
 
@@ -189,7 +191,7 @@ namespace Link
 
             [Command("changename")]
             public async Task ChangeNameCommand([Remainder]string name)
-                => ChangeNameService.ChangeName(Context, name);
+                => DeveloperService.ChangeName(Context, name);
 
             [Command("botlog")]
             public async Task BotlogCommand(int count = 5)
@@ -207,7 +209,7 @@ namespace Link
                     .WithColor(Color.Blue)
                     .WithDescription($"```{_builder.ToString()}```");
 
-                await ReplyAsync("", false, _embed);
+                await ReplyAsync("", false, _embed.Build());
             }
         }
     }

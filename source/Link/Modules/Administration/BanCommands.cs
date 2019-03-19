@@ -14,6 +14,8 @@ namespace Link
     [Group]
     public class BanCommands : ModuleBase<SocketCommandContext>
     {
+        public BanService BanService { get; set; }
+
         [Command("ban")]
         [Summary("Ban a user by mention or ID.")]
         public async Task BanCommand([RequireHierarchy]IUser user, string reason = "")

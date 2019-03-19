@@ -11,7 +11,7 @@ namespace Link
 {
     public class RequireGuildOwnerAttribute : PreconditionAttribute
     {
-        public override async Task<PreconditionResult> CheckPermissions(ICommandContext context, CommandInfo command, IServiceProvider services)
+        public override async Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context, CommandInfo command, IServiceProvider services)
         {
             IGuildUser _user = context.User as IGuildUser;
             if (_user == null)

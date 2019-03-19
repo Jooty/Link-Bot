@@ -55,7 +55,7 @@ namespace Link
                                  $"\nIsBot: {user.IsBot}" +
                                  $"\nID: {user.Id}");
 
-            await _logChannel.SendMessageAsync("", false, _embed);
+            await _logChannel.SendMessageAsync("", false, _embed.Build());
         }
 
         public static async Task UserJoined(SocketGuildUser user)
@@ -74,7 +74,7 @@ namespace Link
                                  $"\nIsBot: {user.IsBot}" +
                                  $"\nID: {user.Id}");
 
-            await _logChannel.SendMessageAsync("", false, _embed);
+            await _logChannel.SendMessageAsync("", false, _embed.Build());
         }
 
         public static async Task JoinedGuild(SocketGuild guild)

@@ -27,7 +27,7 @@ namespace Link
             AddToTimedList(Context.Channel.Id);
 
             var _msgs = Context.Channel.GetCachedMessages(count + 1);
-            await Context.Channel.DeleteMessagesAsync(_msgs);
+            await (Context.Channel as ITextChannel).DeleteMessagesAsync(_msgs);
         }
 
         public static async Task ClearCommandService(SocketCommandContext Context, IUser user, int count)
@@ -41,7 +41,7 @@ namespace Link
             AddToTimedList(Context.Channel.Id);
 
             var _msgs = Context.Channel.GetCachedMessages(100).Where(s => s.Author.Id == user.Id);
-            await Context.Channel.DeleteMessagesAsync(_msgs);
+            await (Context.Channel as ITextChannel).DeleteMessagesAsync(_msgs);
         }
 
         public static async Task ClearCommandService(SocketCommandContext Context, int count, IUser user)
@@ -55,7 +55,7 @@ namespace Link
             AddToTimedList(Context.Channel.Id);
 
             var _msgs = Context.Channel.GetCachedMessages(100).Where(s => s.Author.Id == user.Id);
-            await Context.Channel.DeleteMessagesAsync(_msgs);
+            await (Context.Channel as ITextChannel).DeleteMessagesAsync(_msgs);
         }
 
         public static async Task ClearCommandService(SocketCommandContext Context, ulong userId, int count)
@@ -69,7 +69,7 @@ namespace Link
             AddToTimedList(Context.Channel.Id);
 
             var _msgs = Context.Channel.GetCachedMessages(100).Where(s => s.Author.Id == userId);
-            await Context.Channel.DeleteMessagesAsync(_msgs);
+            await (Context.Channel as ITextChannel).DeleteMessagesAsync(_msgs);
         }
 
         public static async Task ClearCommandService(SocketCommandContext Context, int count, ulong userId)
@@ -83,7 +83,7 @@ namespace Link
             AddToTimedList(Context.Channel.Id);
 
             var _msgs = Context.Channel.GetCachedMessages(100).Where(s => s.Author.Id == userId);
-            await Context.Channel.DeleteMessagesAsync(_msgs);
+            await (Context.Channel as ITextChannel).DeleteMessagesAsync(_msgs);
         }
 
         private static async Task AddToTimedList(ulong channelId)

@@ -10,7 +10,7 @@ namespace Link
 {
     public class RequireHierarchyAttribute : ParameterPreconditionAttribute
     {
-        public override async Task<PreconditionResult> CheckPermissions(ICommandContext context,
+        public override async Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context,
             ParameterInfo parameter, object value, IServiceProvider services)
         {
             // Hierarchy is only available under the socket variant of the user.

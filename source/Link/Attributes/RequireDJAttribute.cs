@@ -11,7 +11,7 @@ namespace Link
 {
     public class RequireDJAttribute : PreconditionAttribute
     {
-        public override async Task<PreconditionResult> CheckPermissions(ICommandContext context, CommandInfo command, IServiceProvider services)
+        public override async Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context, CommandInfo command, IServiceProvider services)
         {
             var _roleId = await GetOrCreateDJRoleIDAsync(context);
             if (_roleId == 0)

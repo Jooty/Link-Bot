@@ -14,18 +14,32 @@ namespace Link
     public class CommandHandlingService
     {
         public static CommandService commands;
-        private DiscordSocketClient client;
+        private static DiscordSocketClient client;
+        private static IServiceProvider services;
 
         public CommandHandlingService(DiscordSocketClient _client) =>
             InitializeAsync(_client).GetAwaiter().GetResult();
 
+        public static IServiceProvider BuildServiceProvider() => new ServiceCollection()
+            .AddSingleton(client)
+            .AddSingleton(commands)
+            .AddSingleton<BanService>()
+            .AddSingleton<DeveloperService>()
+            .AddSingleton<ClearService>()
+            .AddSingleton<MuteService>()
+            .AddSingleton<AudioService>()
+            .BuildServiceProvider();
+
         public async Task InitializeAsync(DiscordSocketClient _client)
         {
             client = _client;
-            client.MessageReceived += HandleCommandAsync;
-
             commands = new CommandService();
-            await commands.AddModulesAsync(Assembly.GetEntryAssembly());
+            services = BuildServiceProvider();
+
+            await commands.AddModulesAsync(
+                assembly: Assembly.GetEntryAssembly(),
+                services: services);
+            client.MessageReceived += HandleCommandAsync;
 
             foreach (var module in commands.Modules)
             {
@@ -50,7 +64,7 @@ namespace Link
             var result = await commands.ExecuteAsync(
                 context: context,
                 argPos: argPos,
-                services: null);
+                services: services);
 
             // LOG
             LogService.Log.Information($"{context.User.Username}#{context.User.Discriminator}: {context.Message.Content}");

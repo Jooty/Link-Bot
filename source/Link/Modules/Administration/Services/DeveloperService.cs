@@ -9,7 +9,7 @@ using Discord.WebSocket;
 
 namespace Link
 {
-    public class ChangeNameService
+    public class DeveloperService
     {
         public static async Task ChangeName(SocketCommandContext Context, string name)
         {

@@ -13,6 +13,8 @@ namespace Link
     [RequireContext(ContextType.Guild)]
     public class MusicCommands : ModuleBase<SocketCommandContext>
     {
+        public AudioService AudService { get; set; }
+
         [Command("join")]
         public async Task JoinCommand()
         {

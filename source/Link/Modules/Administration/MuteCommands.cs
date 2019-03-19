@@ -14,6 +14,8 @@ namespace Link
     [Group]
     public class MuteCommands : ModuleBase<SocketCommandContext>
     {
+        public MuteService MuteService { get; set; }
+
         [Command("Mute")]
         [Summary("Mutes a user indefinetly.")]
         public async Task MuteCommand(IGuildUser user)

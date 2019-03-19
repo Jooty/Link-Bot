@@ -11,7 +11,7 @@ using Discord.WebSocket;
 
 namespace Link
 {
-    public static class AudioService
+    public class AudioService
     {
         private static readonly List<AudioClientWrapper> Clients = new List<AudioClientWrapper>();
 
