@@ -15,5 +15,21 @@ namespace Link
         {
             await Context.Channel.SendMessageAsync($"**{Context.User.Username}** | {response}");
         }
+
+        public static async Task SendTimedResponse(SocketCommandContext Context, string response, TimeSpan time)
+        {
+            try
+            {
+                var _msg = await Context.Channel.SendMessageAsync($"**{Context.User.Username}** | {response}");
+
+                await Task.Delay(time);
+
+                await _msg.DeleteAsync();
+            }
+            catch (Exception ex)
+            {
+                LogService.Log.Warning(ex.Message);
+            }
+        }
     }
 }
