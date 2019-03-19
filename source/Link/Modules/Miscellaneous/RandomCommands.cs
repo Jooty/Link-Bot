@@ -14,7 +14,7 @@ namespace Link
         [Summary("Pings the bot.")]
         public async Task PingCommand()
         {
-            await Respond.SendResponse(Context, $"Pong! `{Context.Client.Latency}`");
+            await Respond.SendResponse(Context, $"Pong! `{Context.Client.Latency}ms`");
         }
 
         [Command("roll")]
