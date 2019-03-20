@@ -82,7 +82,7 @@ namespace Link
             LogService.Log.Information($"Joined guild: {guild.Name}.");
 
             // Create guild configuration
-            Database.CreateDefaultGuildConfig(guild);
+            Database.CreateDefaultGuildConfig(guild, out _);
         }
 
         public static async Task LeftGuild(SocketGuild guild)

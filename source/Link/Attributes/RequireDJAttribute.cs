@@ -14,10 +14,6 @@ namespace Link
         public override async Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context, CommandInfo command, IServiceProvider services)
         {
             var _roleId = await GetOrCreateDJRoleIDAsync(context);
-            if (_roleId == 0)
-            {
-                return PreconditionResult.FromError("The DJ role could not be found. Can you create one for me? I'll find it automatically.");
-            }
 
             if ((context.User as IGuildUser).RoleIds.Any(id => id == _roleId))
             {
@@ -38,8 +34,7 @@ namespace Link
             var _config = Database.GetRecord<GuildConfig>(s => s.ID == Context.Guild.Id);
             if (_config == null)
             {
-                LogService.Log.Warning($"Could not find guild configuration for guild ID: \"{Context.Guild}\" when it was requested.");
-                return 0;
+                Database.CreateDefaultGuildConfig(Context.Guild, out _config);
             }
 
             if (_config.DJRoleID == 0)
@@ -50,12 +45,14 @@ namespace Link
                     var _role = Context.Guild.Roles.First(s => s.Name == "DJ");
 
                     _config.DJRoleID = _role.Id;
+                    Database.UpsertRecord(_config);
 
                     return _role.Id;
                 }
 
                 var _newRole = await Context.Guild.CreateRoleAsync("DJ");
 
+                Database.UpsertRecord(_config);
                 _config.DJRoleID = _newRole.Id;
 
                 return _newRole.Id;
@@ -69,6 +66,7 @@ namespace Link
                     var _newRole = await Context.Guild.CreateRoleAsync("DJ");
 
                     _config.DJRoleID = _newRole.Id;
+                    Database.UpsertRecord(_config);
 
                     return _newRole.Id;
                 }

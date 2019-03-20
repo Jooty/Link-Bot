@@ -42,7 +42,7 @@ namespace Link
                         return;
                     }
 
-                    Database.CreateDefaultGuildConfig(Context.Guild);
+                    Database.CreateDefaultGuildConfig(Context.Guild, out _);
 
                     await ReplyAsync($"Guild config created for guild with ID: `{_guild.Id}`");
                 }
@@ -160,7 +160,7 @@ namespace Link
                     {
                         Database.DeleteRecord<GuildConfig>(s => s.ID == guild.Id);
 
-                        Database.CreateDefaultGuildConfig(Context.Guild);
+                        Database.CreateDefaultGuildConfig(Context.Guild, out _);
                     }
 
                     await Respond.SendResponse(Context, "Restored all guild configurations to default.");

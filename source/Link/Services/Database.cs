@@ -72,7 +72,7 @@ namespace Link
                 {
                     LogService.Log.Warning($"Guild \"{guild.Name}\"({guild.Id}) does not have a guild configuration. Creating one now..");
 
-                    CreateDefaultGuildConfig(guild);
+                    CreateDefaultGuildConfig(guild, out _);
                 }
                 else if (_record.Name != guild.Name) // Update name
                 {
@@ -93,7 +93,7 @@ namespace Link
             }
         }
 
-        public static void CreateDefaultGuildConfig(IGuild guild)
+        public static void CreateDefaultGuildConfig(IGuild guild, out GuildConfig config)
         {
             // Get owner
             var _owner = guild.GetOwnerAsync().Result;
@@ -130,6 +130,7 @@ namespace Link
             };
 
             UpsertRecord(_config);
+            config = _config;
 
             LogService.Log.Information($"Created guild configuration for guild ID \"{guild.Id}\"");
         }
