@@ -39,17 +39,6 @@ namespace Link
 
             if (_config.DJRoleID == 0)
             {
-                // Try to find one, if it exists
-                if (Context.Guild.Roles.Any(s => s.Name == "DJ"))
-                {
-                    var _role = Context.Guild.Roles.First(s => s.Name == "DJ");
-
-                    _config.DJRoleID = _role.Id;
-                    Database.UpsertRecord(_config);
-
-                    return _role.Id;
-                }
-
                 var _newRole = await Context.Guild.CreateRoleAsync("DJ");
 
                 Database.UpsertRecord(_config);
