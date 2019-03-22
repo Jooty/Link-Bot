@@ -212,6 +212,7 @@
     <Compile Include="Modules\Administration\Services\ClearService.cs" />
     <Compile Include="Modules\Administration\Services\BanService.cs" />
     <Compile Include="Modules\Leaderboards\GameLeaderboardCommands.cs" />
+    <Compile Include="Modules\Leaderboards\VoiceLeaderboardCommands.cs" />
     <Compile Include="Modules\Miscellaneous\HelpCommands.cs" />
     <Compile Include="Modules\Miscellaneous\MusicCommands.cs" />
     <Compile Include="Modules\Miscellaneous\Services\8BallService.cs" />

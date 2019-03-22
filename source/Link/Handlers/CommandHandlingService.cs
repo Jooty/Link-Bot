@@ -23,6 +23,8 @@ namespace Link
         public static IServiceProvider BuildServiceProvider() => new ServiceCollection()
             .AddSingleton(client)
             .AddSingleton(commands)
+            .AddSingleton<ConfirmationService>()
+            .AddSingleton<LeaderboardService>()
             .AddSingleton<BanService>()
             .AddSingleton<DeveloperService>()
             .AddSingleton<ClearService>()

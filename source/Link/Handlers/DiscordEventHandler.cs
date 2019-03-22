@@ -141,6 +141,7 @@ namespace Link
 
             new CommandHandlingService(Program.client);
             new ConfirmationService();
+            new LeaderboardService();
 
             Database.CheckForAllGuildConfigs();
         }
