@@ -20,7 +20,7 @@ namespace Link
 
             await Respond.SendResponse(Context, $"Muted user **{user.Username}#{user.Discriminator}**.");
 
-            AddMuteToDatabase(user);
+            AddMute(user);
         }
 
         public static async Task Mute(SocketCommandContext Context, ulong id)
@@ -38,7 +38,7 @@ namespace Link
 
             await Respond.SendResponse(Context, $"Muted user **{_user.Username}#{_user.Discriminator}**.");
 
-            AddMuteToDatabase(_user);
+            AddMute(_user);
         }
 
         public static async Task Mute(SocketCommandContext Context, IGuildUser user, string time)
@@ -51,7 +51,7 @@ namespace Link
 
             if (_time.TotalDays == 0) _time = TimeSpan.FromMinutes(30);
 
-            AddMuteToDatabase(user, _time);
+            AddMute(user, _time);
 
             await Respond.SendResponse(Context, $"Muted user **{user.Username}#{user.Discriminator}** for {time}.");
         }
@@ -70,7 +70,7 @@ namespace Link
 
             await Respond.SendResponse(Context, $"Unmuted {user.Username}#{user.Discriminator}.");
 
-            RemoveMuteFromDatabase(user);
+            RemoveMute(user);
         }
 
         public static async Task Unmute(SocketCommandContext Context, ulong id)
@@ -94,7 +94,7 @@ namespace Link
 
             await Respond.SendResponse(Context, $"Unmuted {_user.Username}#{_user.Discriminator}.");
 
-            RemoveMuteFromDatabase(_user);
+            RemoveMute(_user);
         }
 
         public static async Task CheckNewUserForMute(IGuildUser user)
@@ -113,7 +113,7 @@ namespace Link
 
             if (_record != null)
             {
-                await VoiceMuteUser(user);
+                await VoiceMuteUserAsync(user);
             }
         }
 
@@ -138,7 +138,7 @@ namespace Link
 
                 if (mute.Time.Value.TotalSeconds <= 0)
                 {
-                    await UnmuteUserFromID(mute.GuildId, mute.UserId);
+                    await UnmuteUserAsync(mute.GuildId, mute.UserId);
                 }
                 else
                 {
@@ -148,7 +148,7 @@ namespace Link
             }
         }
 
-        public static void AddMuteToDatabase(IGuildUser user, TimeSpan? time = null)
+        public static void AddMute(IGuildUser user, TimeSpan? time = null)
         {
             var _record = new MuteRecord()
             {
@@ -160,7 +160,7 @@ namespace Link
             Database.UpsertRecord(_record);
         }
 
-        public static void RemoveMuteFromDatabase(IGuildUser user)
+        public static void RemoveMute(IGuildUser user)
         {
             var _record = Database.GetRecord<MuteRecord>(s => s.GuildId == user.GuildId && s.UserId == user.Id);
 
@@ -170,7 +170,7 @@ namespace Link
             }
         }
 
-        public static void AddVoiceMuteToDatabase(ulong userId, ulong guildId)
+        public static void AddVoiceMute(ulong userId, ulong guildId)
         {
             var _vRecord = new VoiceMuteRecord()
             {
@@ -181,7 +181,7 @@ namespace Link
             Database.UpsertRecord(_vRecord);
         }
 
-        public static void RemoveVoiceMuteFromDatabase(ulong userId, ulong guildId)
+        public static void RemoveVoiceMute(ulong userId, ulong guildId)
         {
             var _vRecord = Database.GetRecord<VoiceMuteRecord>(s => s.UserId == userId && s.GuildId == guildId);
 
@@ -191,12 +191,12 @@ namespace Link
             }
         }
 
-        public static async Task VoiceMuteUser(IGuildUser user)
+        public static async Task VoiceMuteUserAsync(IGuildUser user)
         {
             await user.ModifyAsync(s => s.Mute = true);
         }
 
-        public static async Task VoiceUnmuteUser(IGuildUser user)
+        public static async Task VoiceUnmuteUserAsync(IGuildUser user)
         {
             await user.ModifyAsync(s => s.Mute = false);
         }
@@ -236,7 +236,7 @@ namespace Link
             return guild.GetRole(_config.MutedRoleID);
         }
 
-        public static async Task UnmuteUserFromID(ulong guildId, ulong userId)
+        public static async Task UnmuteUserAsync(ulong guildId, ulong userId)
         {
             var _guild = Program.client.GetGuild(guildId);
             var _user = _guild.GetUser(userId);

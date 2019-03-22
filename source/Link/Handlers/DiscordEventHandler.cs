@@ -106,11 +106,11 @@ namespace Link
 
             if (!before.IsMuted && after.IsMuted) // If server muted
             {
-                MuteService.AddVoiceMuteToDatabase(_guildUser.Id, _guildUser.GuildId);
+                MuteService.AddVoiceMute(_guildUser.Id, _guildUser.GuildId);
             }
             else if(before.IsMuted && !after.IsMuted) // If un-server muted
             {
-                MuteService.RemoveVoiceMuteFromDatabase(_guildUser.Id, _guildUser.GuildId);
+                MuteService.RemoveVoiceMute(_guildUser.Id, _guildUser.GuildId);
             }
         }
 
@@ -126,11 +126,11 @@ namespace Link
                 var _mutedRole = await MuteService.GetOrCreateMutedRoleAsync(_before.Guild);
                 if (_before.RoleIds.Contains(_mutedRole.Id) && !_after.RoleIds.Contains(_mutedRole.Id))
                 {
-                    MuteService.RemoveMuteFromDatabase(_after);
+                    MuteService.RemoveMute(_after);
                 }
                 else if (!_before.RoleIds.Contains(_mutedRole.Id) && _after.RoleIds.Contains(_mutedRole.Id))
                 {
-                    MuteService.AddMuteToDatabase(_after);
+                    MuteService.AddMute(_after);
                 }
             }
         }
@@ -169,20 +169,12 @@ namespace Link
                     break;
             }
 
-            try
+            Database.UpsertRecord(new LogRecord()
             {
-                // insert into database
-                Database.UpsertRecord(new LogRecord()
-                {
-                    Date = DateTime.Now,
-                    Log = msg.Message,
-                    Type = LogType.bot
-                });
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
+                Date = DateTime.Now,
+                Log = msg.Message,
+                Type = LogType.bot
+            });
         }
     }
 }
