@@ -38,13 +38,13 @@ namespace Link
             }
         }
 
-        public static IEnumerable<T> GetRecords<T>(Expression<Func<T, bool>> func)
+        public static T[] GetRecords<T>(Expression<Func<T, bool>> func)
         {
             using (var db = new LiteDatabase("LinkData.db"))
             {
                 var _col = db.GetCollection<T>(typeof(T).Name);
 
-                return _col.Find(func);
+                return _col.Find(func).ToArray();
             }
         }
 

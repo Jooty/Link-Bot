@@ -68,6 +68,9 @@
     <Reference Include="Discord.Net.WebSocket, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Discord.Net.WebSocket.2.0.1\lib\net46\Discord.Net.WebSocket.dll</HintPath>
     </Reference>
+    <Reference Include="Humanizer, Version=2.6.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Humanizer.Core.2.6.2\lib\netstandard2.0\Humanizer.dll</HintPath>
+    </Reference>
     <Reference Include="libvideo, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VideoLibraryHIG.1.5.3\lib\netstandard1.1\libvideo.dll</HintPath>
     </Reference>
@@ -220,6 +223,7 @@
     <Compile Include="Modules\Miscellaneous\RandomCommands.cs" />
     <Compile Include="Modules\Administration\ClearCommands.cs" />
     <Compile Include="Modules\Miscellaneous\Services\AudioService.cs" />
+    <Compile Include="Services\VoiceLeaderboardService.cs" />
     <None Include="Music\BASE">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
