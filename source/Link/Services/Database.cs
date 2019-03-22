@@ -65,7 +65,7 @@ namespace Link
 
             foreach (var guild in Program.client.Guilds)
             {
-                var _record = _configs.First(s => s.ID == guild.Id);
+                var _record = _configs.FirstOrDefault(s => s.ID == guild.Id);
 
                 // Create record if doesn't exist
                 if (_record == null)
