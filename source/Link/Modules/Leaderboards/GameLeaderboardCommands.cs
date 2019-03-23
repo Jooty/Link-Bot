@@ -77,7 +77,7 @@ namespace Link
 
             var _embed = new EmbedBuilder()
                 .WithColor(Color.Blue)
-                .WithTitle($"Personal leaderboard for: {Context.User.Username}#{Context.User.Discriminator}");
+                .WithTitle($"Personal game leaderboard for: {Context.User.Username}#{Context.User.Discriminator}");
 
             // Build personal leaderboard
             StringBuilder _builder = new StringBuilder();

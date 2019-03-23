@@ -91,21 +91,23 @@ namespace Link
                     if (user.VoiceChannel == null) continue;
                     if (user.VoiceChannel == guild.AFKChannel) continue;
 
+                    _curRecord.TotalTime = _curRecord.TotalTime.Add(TimeSpan.FromSeconds(1));
+
                     if (user.IsSelfMuted)
                     {
                         _curRecord.TimeMuted = _curRecord.TimeMuted.Add(TimeSpan.FromSeconds(1));
                     }
                     else if (user.IsSelfDeafened)
                     {
-                        _curRecord.TimeMuted = _curRecord.TimeDeafened.Add(TimeSpan.FromSeconds(1));
+                        _curRecord.TimeDeafened = _curRecord.TimeDeafened.Add(TimeSpan.FromSeconds(1));
                     }
                     else if (user.IsMuted)
                     {
-                        _curRecord.TimeMuted = _curRecord.TimeServerMuted.Add(TimeSpan.FromSeconds(1));
+                        _curRecord.TimeServerMuted = _curRecord.TimeServerMuted.Add(TimeSpan.FromSeconds(1));
                     }
                     else
                     {
-                        _curRecord.TimeMuted = _curRecord.TotalTime.Add(TimeSpan.FromSeconds(1));
+                        _curRecord.TimeAwake = _curRecord.TotalTime.Add(TimeSpan.FromSeconds(1));
                     }
 
                     Database.UpsertRecord(_curRecord);
