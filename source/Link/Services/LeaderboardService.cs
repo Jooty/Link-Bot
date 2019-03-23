@@ -28,20 +28,29 @@ namespace Link
         }
 
         public static VoiceLeaderboardEntry[] GetVoiceLeaderboard(IGuild guild) 
-            => Database.GetRecords<VoiceLeaderboardEntry>(s => s.GuildId == guild.Id).OrderBy(s => s.TotalTime).Take(10).ToArray();
+            => Database.GetRecords<VoiceLeaderboardEntry>(s => s.EntryStats.GuildId == guild.Id)
+            .Where(s => s.TotalTime.TotalMilliseconds > 0)
+            .OrderBy(s => s.TotalTime)
+            .Take(10)
+            .ToArray();
 
         public static VoiceLeaderboardEntry GetVoiceHours(ulong guildId, ulong userId)
-            => Database.GetRecord<VoiceLeaderboardEntry>(s => s.GuildId == guildId && s.UserId == userId);
+            => Database.GetRecord<VoiceLeaderboardEntry>(s => s.EntryStats.GuildId == guildId && s.EntryStats.UserId == userId);
 
         public static GameLeaderboardEntry[] GetGameLeaderboard(IGuild guild)
         {
             var _records = Database.GetRecords<GameLeaderboardEntry>(s => s.Time.TotalMilliseconds != 0).ToArray();
 
-            return _records.Where(s => guild.GetUsersAsync().Result.Any(x => x.Id == s.EntryStats.UserId)).Take(10).ToArray();
+            return _records.Where(s => guild.GetUsersAsync().Result.Any(x => x.Id == s.EntryStats.UserId))
+                .Where(s => s.Time.TotalMilliseconds > 0)
+                .Take(10)
+                .ToArray();
         }
 
         public static GameLeaderboardEntry[] GetGameLeaderboard(string game) 
-            => Database.GetRecords<GameLeaderboardEntry>(s => s.EntryStats.Game == game).OrderBy(s => s.Time).ToArray();
+            => Database.GetRecords<GameLeaderboardEntry>(s => s.EntryStats.Game == game)
+            .OrderBy(s => s.Time)
+            .ToArray();
 
         public static GameLeaderboardEntry GetGameHours(ulong guildId, ulong userId, string game)
             => Database.GetRecord<GameLeaderboardEntry>(s => s.EntryStats.UserId == userId && s.EntryStats.Game == game);
@@ -51,19 +60,24 @@ namespace Link
 
         private void UpdateAllUsersVoice()
         {
+            List<ulong> _seenUsers = new List<ulong>();
+
             foreach (var guild in Program.client.Guilds)
             {
                 foreach (var user in guild.Users)
                 {
                     if (user.IsBot) continue;
 
-                    var _curRecord = Database.GetRecord<VoiceLeaderboardEntry>(s => s.UserId == user.Id);
+                    var _curRecord = Database.GetRecord<VoiceLeaderboardEntry>(s => s.EntryStats.UserId == user.Id && s.EntryStats.GuildId == guild.Id);
                     if (_curRecord == null)
                     {
                         Database.UpsertRecord(new VoiceLeaderboardEntry()
                         {
-                            GuildId = guild.Id,
-                            UserId = user.Id,
+                            EntryStats = new VoiceLeaderboardEntry.Stats()
+                            {
+                                UserId = user.Id,
+                                GuildId = guild.Id
+                            },
                             TotalTime = new TimeSpan(),
                             TimeAwake = new TimeSpan(),
                             TimeMuted = new TimeSpan(),
@@ -71,7 +85,7 @@ namespace Link
                             TimeServerMuted = new TimeSpan()
                         });
 
-                        _curRecord = Database.GetRecord<VoiceLeaderboardEntry>(s => s.UserId == user.Id);
+                        _curRecord = Database.GetRecord<VoiceLeaderboardEntry>(s => s.EntryStats.UserId == user.Id && s.EntryStats.GuildId == guild.Id);
                     }
 
                     if (user.VoiceChannel == null) continue;
@@ -149,9 +163,13 @@ namespace Link
 
         public class VoiceLeaderboardEntry
         {
+            public class Stats
+            {
+                public ulong UserId { get; set; }
+                public ulong GuildId { get; set; }
+            }
             [BsonId]
-            public ulong UserId { get; set; }
-            public ulong GuildId { get; set; }
+            public Stats EntryStats { get; set; }
             public TimeSpan TotalTime { get; set; }
             public TimeSpan TimeAwake { get; set; }
             public TimeSpan TimeMuted { get; set; }

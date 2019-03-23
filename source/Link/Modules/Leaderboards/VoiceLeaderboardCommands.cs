@@ -27,7 +27,7 @@ namespace Link
             StringBuilder _builder = new StringBuilder();
             foreach (var user in _leaderboard)
             {
-                var _user = Context.Guild.GetUser(user.UserId);
+                var _user = Context.Guild.GetUser(user.EntryStats.UserId);
 
                 _builder.Append($"\n" +
                     $"{_leaderboard.IndexOf(user) + 1}.) " +
@@ -44,7 +44,7 @@ namespace Link
         [Summary("Gets your stats for voice in this guild.")]
         public async Task VoiceLevelCommand(IGuildUser user = null)
         {
-            var _user = (user == null) ? Context.User as IGuildUser : user;
+            var _user = user ?? Context.User as IGuildUser;
             var _userRec = LeaderboardService.GetVoiceHours(Context.Guild.Id, _user.Id);
 
             var _embed = new EmbedBuilder()

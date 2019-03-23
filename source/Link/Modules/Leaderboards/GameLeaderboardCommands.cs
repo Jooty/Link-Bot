@@ -18,7 +18,7 @@ namespace Link
         [Summary("Gets a leaderboard of users with the most hours.")]
         public async Task GameLeaderboardCommand()
         {
-            var _leaderboard = LeaderboardService.GetGameLeaderboard(Context.Guild).ToList();
+            var _leaderboard = LeaderboardService.GetGameLeaderboard(Context.Guild).OrderByDescending(s => s.Time).ToList();
 
             var _embed = new EmbedBuilder()
                 .WithColor(Color.Blue)
