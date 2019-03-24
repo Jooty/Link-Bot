@@ -16,18 +16,21 @@ namespace Link
         public AudioService AudService { get; set; }
 
         [Command("join")]
+        [Summary("Join a channel.")]
         public async Task JoinCommand()
         {
             AudioService.JoinAudio(Context);
         }
 
         [Command("play")]
+        [Summary("Join a channel, then play a song.")]
         public async Task PlayCommand([Remainder]string song)
         {
             AudioService.Play(Context, song);
         }
 
         [Command("skip")]
+        [Summary("Skips the current song. Requires DJ.")]
         [RequireDJ]
         public async Task SkipCommand()
         {
@@ -35,6 +38,7 @@ namespace Link
         }
 
         [Command("pause")]
+        [Summary("Pauses the current song. Requires DJ.")]
         [RequireDJ]
         public async Task PauseCommand()
         {
@@ -43,6 +47,7 @@ namespace Link
 
         [Command("resume")]
         [Alias("unpause")]
+        [Summary("Resumes the current song. Requires DJ.")]
         [RequireDJ]
         public async Task ResumeCommand()
         {
@@ -50,6 +55,7 @@ namespace Link
         }
 
         [Command("remove")]
+        [Summary("Removes a song at index. Requires DJ.")]
         [RequireDJ]
         public async Task RemoveCommand(int index)
         {
