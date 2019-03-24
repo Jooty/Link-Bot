@@ -13,9 +13,15 @@ namespace Link
         public string Token { get; private set; }
 
         [JsonProperty]
-        public string Prefix { get; private set; }
+        public string Prefix { get; set; }
 
         [JsonProperty]
-        public List<ulong> DeveloperIDs { get; private set; }
+        public int DefaultStatus { get; set; }
+
+        [JsonProperty]
+        public string DefaultActivity { get; set; }
+
+        [JsonProperty]
+        public List<ulong> DeveloperIDs { get; set; }
     }
 }

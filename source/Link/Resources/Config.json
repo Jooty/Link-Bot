@@ -1,7 +1,9 @@
 ﻿{
   "Token": "",
   "Prefix": ">",
+  "DefaultStatus": 1,
+  "DefaultActivity": "3|My testing realm..",
   "DeveloperIDs": [
-    ""
+    71489455990517760
   ]
 }

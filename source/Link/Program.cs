@@ -9,7 +9,6 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reactive;
 using System.Reactive.Linq;
-using Newtonsoft.Json;
 
 namespace Link
 {
@@ -24,7 +23,7 @@ namespace Link
 
         public async Task MainAsync()
         {
-            Config = JsonConvert.DeserializeObject<BotConfig>(File.ReadAllText(@"Resources/Config.json"));
+            Config = BotConfigService.GetConfig();
 
             LogService.Initialize();
 
@@ -51,12 +50,81 @@ namespace Link
             IDisposable databaseMuteTimers =
                 Observable
                     .Interval(TimeSpan.FromSeconds(1))
+                    #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     .Subscribe(x => MuteService.UpdateDatabaseTimers());
+                    #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
             await client.LoginAsync(TokenType.Bot, Config.Token);
             await client.StartAsync();
 
+            SetBotStatuses().ConfigureAwait(false);
+
             await Task.Delay(-1);
+        }
+
+        private async Task SetBotStatuses()
+        {
+            var _config = BotConfigService.GetConfig();
+
+            #region Status
+
+            int _defaultStatus = 1;
+            if (_config.DefaultStatus < 1 || _config.DefaultStatus > 4)
+            {
+                // Goto default
+                await client.SetStatusAsync(UserStatus.Online);
+                LogService.Log.Warning("Default Status must be a value through 1 and 4 in the Config.json!");
+
+                _defaultStatus = 1;
+            }
+
+            switch (_defaultStatus)
+            {
+                case 1:
+                    await client.SetStatusAsync(UserStatus.Online);
+                    break;
+                case 2:
+                    await client.SetStatusAsync(UserStatus.Idle);
+                    break;
+                case 3:
+                    await client.SetStatusAsync(UserStatus.DoNotDisturb);
+                    break;
+                case 4:
+                    await client.SetStatusAsync(UserStatus.Offline);
+                    break;
+            }
+            #endregion
+
+            #region Activity
+
+            string[] _values = _config.DefaultActivity.Split('|');
+
+            if (int.TryParse(_values[0], out var _activityIndex))
+            {
+                switch (_activityIndex)
+                {
+                    case 1:
+                        await client.SetGameAsync(_values[1], type: ActivityType.Playing);
+                        break;
+                    case 2:
+                        await client.SetGameAsync(_values[1], type: ActivityType.Listening);
+                        break;
+                    case 3:
+                        await client.SetGameAsync(_values[1], type: ActivityType.Watching);
+                        break;
+                    case 4:
+                        await client.SetGameAsync(_values[1], type: ActivityType.Streaming);
+                        break;
+                }
+            }
+            else
+            {
+                LogService.Log.Warning("Could not parse DefaultActivity successfully! Exmample: \"3|My Testing Realm..\"");
+
+                return;
+            }
+
+            #endregion
         }
     }
 }

@@ -17,6 +17,8 @@ namespace Link
         private static DiscordSocketClient client;
         private static IServiceProvider services;
 
+        private string prefix;
+
         public CommandHandlingService(DiscordSocketClient _client) =>
             InitializeAsync(_client).GetAwaiter().GetResult();
 
@@ -57,7 +59,7 @@ namespace Link
 
             int argPos = 0;
 
-            if (!(message.HasStringPrefix(Program.Config.Prefix, ref argPos) ||
+            if (!(message.HasStringPrefix(BotConfigService.GetPrefix(), ref argPos) ||
                 message.HasMentionPrefix(client.CurrentUser, ref argPos)) ||
                 message.Author.IsBot)
                 return;

@@ -14,7 +14,6 @@ using Discord.Commands;
 using Discord.WebSocket;
 using LiteDB;
 using Newtonsoft.Json;
-using PastebinAPI;
 
 namespace Link
 {
@@ -22,6 +21,123 @@ namespace Link
     public class DeveloperCommands
     {
         public DeveloperService DevService { get; set; }
+
+        [Group]
+        public class DeveloperBasicCommands : ModuleBase<SocketCommandContext>
+        {
+            [Command("shutdown")]
+            public async Task ShutdownCommand()
+            {
+                await Respond.SendResponse(Context, ":thumbsup:");
+
+                Environment.Exit(1);
+            }
+
+            [Command("restart")]
+            public async Task RestardCommand()
+            {
+                await Respond.SendResponse(Context, ":thumbsup:");
+
+                Process.Start(Assembly.GetExecutingAssembly().Location);
+
+                Environment.Exit(1);
+            }
+
+            [Command("changename")]
+            public async Task ChangeNameCommand([Remainder]string name)
+                => await DeveloperService.ChangeName(Context, name).ConfigureAwait(false);
+
+            [Command("botlog")]
+            public async Task BotlogCommand(int count = 5)
+            {
+                var _logs = Database.GetRecords<LogRecord>(s => s.Type == LogType.bot);
+
+                StringBuilder _builder = new StringBuilder();
+                foreach (var log in _logs)
+                {
+                    _builder.Append($"\n[{log.Date}] {log.Log}");
+                }
+
+                var _embed = new EmbedBuilder()
+                    .WithTitle($"Last {count} bot logs:")
+                    .WithColor(Color.Blue)
+                    .WithDescription($"```{_builder.ToString()}```");
+
+                await ReplyAsync("", false, _embed.Build());
+            }
+
+            [Command("status")]
+            [Summary("Changes the bot stats. 1 - Online, 2 - Idle, 3 - DnD, 4 - Offline.")]
+            public async Task ChangeStatusCommand(int status)
+            {
+                if (status < 1 || status > 4)
+                {
+                    await Respond.SendResponse(Context, "Status can only be between **1-4**!");
+
+                    return;
+                }
+
+                BotConfigService.SetDefaultStatus(status);
+
+                switch (status)
+                {
+                    case 1:
+                        await Context.Client.SetStatusAsync(UserStatus.Online);
+                        break;
+                    case 2:
+                        await Context.Client.SetStatusAsync(UserStatus.Idle);
+                        break;
+                    case 3:
+                        await Context.Client.SetStatusAsync(UserStatus.DoNotDisturb);
+                        break;
+                    case 4:
+                        await Context.Client.SetStatusAsync(UserStatus.Offline);
+                        break;
+                }
+            }
+
+            [Command("setgame")]
+            [Summary("Changes the bot's current activity. 1 - Playing, 2 - Listening, 3 - Watching, 4 - Streaming")]
+            public async Task ChangeGameCommand(int status, [Remainder]string game)
+            {
+                if (status < 1 || status > 4)
+                {
+                    await Respond.SendResponse(Context, "Status can only be between **1-4**!");
+
+                    return;
+                }
+
+                BotConfigService.SetDefaultActivity(status, game);
+
+                switch (status)
+                {
+                    case 1:
+                        await Context.Client.SetGameAsync(game, type: ActivityType.Playing);
+                        break;
+                    case 2:
+                        await Context.Client.SetGameAsync(game, type: ActivityType.Listening);
+                        break;
+                    case 3:
+                        await Context.Client.SetGameAsync(game, type: ActivityType.Watching);
+                        break;
+                    case 4:
+                        await Context.Client.SetGameAsync(game, "https://www.twitch.tv/", ActivityType.Streaming);
+                        break;
+                    default:
+                        await Respond.SendResponse(Context, "Please limit activity `1-4`.");
+                        break;
+                }
+            }
+
+            [Command("prefix")]
+            [Summary("Changes the bot's default prefix.")]
+            public async Task ChangePrefixCommand(string newPrefix)
+            {
+                BotConfigService.SetPrefix(newPrefix);
+
+                await Respond.SendResponse(Context, $"My new prefix is now: `{newPrefix}`!");
+            }
+        }
 
         [Group("Database")]
         public class DeveloperDatabaseCommands : ModuleBase<SocketCommandContext>
@@ -165,51 +281,6 @@ namespace Link
 
                     await Respond.SendResponse(Context, "Restored all guild configurations to default.");
                 }
-            }
-        }
-
-        [Group]
-        public class DeveloperBasicCommands : ModuleBase<SocketCommandContext>
-        {
-            [Command("shutdown")]
-            public async Task ShutdownCommand()
-            {
-                await Respond.SendResponse(Context, ":thumbsup:");
-
-                Environment.Exit(1);
-            }
-
-            [Command("restart")]
-            public async Task RestardCommand()
-            {
-                await Respond.SendResponse(Context, ":thumbsup:");
-
-                Process.Start(Assembly.GetExecutingAssembly().Location);
-
-                Environment.Exit(1);
-            }
-
-            [Command("changename")]
-            public async Task ChangeNameCommand([Remainder]string name)
-                => DeveloperService.ChangeName(Context, name);
-
-            [Command("botlog")]
-            public async Task BotlogCommand(int count = 5)
-            {
-                var _logs = Database.GetRecords<LogRecord>(s => s.Type == LogType.bot);
-
-                StringBuilder _builder = new StringBuilder();
-                foreach (var log in _logs)
-                {
-                    _builder.Append($"\n[{log.Date}] {log.Log}");
-                }
-
-                var _embed = new EmbedBuilder()
-                    .WithTitle($"Last {count} bot logs:")
-                    .WithColor(Color.Blue)
-                    .WithDescription($"```{_builder.ToString()}```");
-
-                await ReplyAsync("", false, _embed.Build());
             }
         }
     }
