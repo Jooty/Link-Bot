@@ -64,6 +64,10 @@ namespace Link
         {
             if (Queue.Count != 0)
             {
+                CurrentlyPlaying = null;
+                Queue.Remove(Queue.First());
+                Task.Run(() => RefreshEmbedAsync().ConfigureAwait(false));
+
                 calledForSkip = true;
                 Stop();
             }
@@ -81,9 +85,6 @@ namespace Link
                     }
                     cancelToken = new CancellationTokenSource();
                 }
-
-                CurrentlyPlaying = null;
-                RefreshEmbedAsync();
             }
         }
 
@@ -220,9 +221,9 @@ namespace Link
                 .WithTitle($"{(pause > 0 ? "⏸" : "▶")} Music Player")
                 .WithColor(Color.Blue);
 
-            if (CurrentlyPlaying == null)
+            if (Queue.Count == 0)
             {
-                _embed.WithDescription("Not playing anything! Use `>play <link/search>`.");
+                _embed.WithDescription("Nothing in the queue! Use `>play <link/search>`.");
                 return;
             }
 

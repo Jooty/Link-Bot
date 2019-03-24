@@ -15,13 +15,13 @@ namespace Link
         {
             var _roleId = await GetOrCreateDJRoleIDAsync(context);
 
-            if ((context.User as IGuildUser).RoleIds.Any(id => id == _roleId))
-            {
-                return PreconditionResult.FromError("Only a DJ can perform this command!");
-            }
-            else if ((context.User as IGuildUser).GuildPermissions.MoveMembers)
+            if ((context.User as IGuildUser).GuildPermissions.MoveMembers)
             {
                 return PreconditionResult.FromSuccess();
+            }
+            else if ((context.User as IGuildUser).RoleIds.Any(id => id == _roleId))
+            {
+                return PreconditionResult.FromError("Only a DJ can perform this command!");
             }
             else
             {

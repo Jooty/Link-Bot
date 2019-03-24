@@ -18,7 +18,7 @@ namespace Link
         [Summary("Gets the leaderboard for the most hours in a voice channel for this guild.")]
         public async Task VoiceLeaderboardCommand()
         {
-            var _leaderboard = LeaderboardService.GetVoiceLeaderboard(Context.Guild).ToList();
+            var _leaderboard = LeaderboardService.GetVoiceLeaderboard(Context.Guild).OrderByDescending(s => s.TotalTime).ToList();
 
             var _embed = new EmbedBuilder()
                 .WithColor(Color.Blue)
