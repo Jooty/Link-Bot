@@ -22,7 +22,7 @@ namespace Link
 
             var _embed = new EmbedBuilder()
                 .WithColor(Color.Blue)
-                .WithTitle($"Voice leaderboard for: \"{Context.Guild.Name}\"");
+                .WithTitle($"Voice leaderboard for: {Context.Guild.Name} ({Context.Guild.Users.Count})");
 
             StringBuilder _builder = new StringBuilder();
             foreach (var user in _leaderboard)
@@ -30,7 +30,7 @@ namespace Link
                 var _user = Context.Guild.GetUser(user.EntryStats.UserId);
 
                 _builder.Append($"\n" +
-                    $"{_leaderboard.IndexOf(user) + 1}.) " +
+                    $"`{_leaderboard.IndexOf(user) + 1}.)` " +
                     $"**{_user.Mention ?? (_user.Username + "#" + _user.Discriminator)}** " +
                     $"- Total Time: `{Math.Round(user.TotalTime.TotalHours, 2)}` hours");
             }

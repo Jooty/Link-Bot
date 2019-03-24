@@ -31,7 +31,6 @@ namespace Link
             => Database.GetRecords<VoiceLeaderboardEntry>(s => s.EntryStats.GuildId == guild.Id)
             .Where(s => s.TotalTime.TotalMilliseconds > 0)
             .OrderBy(s => s.TotalTime)
-            .Take(10)
             .ToArray();
 
         public static VoiceLeaderboardEntry GetVoiceHours(ulong guildId, ulong userId)
@@ -43,7 +42,6 @@ namespace Link
 
             return _records.Where(s => guild.GetUsersAsync().Result.Any(x => x.Id == s.EntryStats.UserId))
                 .Where(s => s.Time.TotalMilliseconds > 0)
-                .Take(10)
                 .ToArray();
         }
 
