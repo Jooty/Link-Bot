@@ -30,6 +30,7 @@ namespace Link
             .AddSingleton<ClearService>()
             .AddSingleton<MuteService>()
             .AddSingleton<AudioService>()
+            .AddSingleton<TagService>()
             .BuildServiceProvider();
 
         public async Task InitializeAsync(DiscordSocketClient _client)

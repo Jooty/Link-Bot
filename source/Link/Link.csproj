@@ -222,6 +222,9 @@
     <Compile Include="Modules\Miscellaneous\RandomCommands.cs" />
     <Compile Include="Modules\Administration\ClearCommands.cs" />
     <Compile Include="Modules\Miscellaneous\Services\AudioService.cs" />
+    <Compile Include="Modules\Miscellaneous\Services\TagService.cs" />
+    <Compile Include="Modules\Miscellaneous\TagCommands.cs" />
+    <Compile Include="Objects\Tag.cs" />
     <Compile Include="Services\LeaderboardService.cs" />
     <None Include="Music\BASE">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
