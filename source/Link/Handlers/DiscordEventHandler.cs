@@ -32,6 +32,9 @@ namespace Link
             if (oldMessage.Value.Author.IsBot) return;
             if (channel is IDMChannel) return;
 
+            // If embed
+            if (oldMessage.Value.Attachments != newMessage.Attachments) return;
+
             var _channel = channel as IGuildChannel;
             var _logChannel = LogService.GetLogChannel(_channel.Guild.Id);
 
