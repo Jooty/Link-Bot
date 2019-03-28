@@ -15,7 +15,9 @@ namespace Link
         {
             // Hierarchy is only available under the socket variant of the user.
             if (!(context.User is SocketGuildUser guildUser))
+            {
                 return PreconditionResult.FromError("");
+            }
 
             SocketGuildUser targetUser;
             switch (value)
@@ -31,14 +33,20 @@ namespace Link
             }
 
             if (targetUser == null)
+            {
                 return PreconditionResult.FromError("Target user not found.");
+            }
 
             if (guildUser.Hierarchy < targetUser.Hierarchy)
+            {
                 return PreconditionResult.FromError("");
+            }
 
             var currentUser = await context.Guild.GetCurrentUserAsync().ConfigureAwait(false) as SocketGuildUser;
             if (currentUser?.Hierarchy < targetUser.Hierarchy)
+            {
                 return PreconditionResult.FromError("");
+            }
 
             return PreconditionResult.FromSuccess();
         }

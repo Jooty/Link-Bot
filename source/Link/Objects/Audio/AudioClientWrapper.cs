@@ -44,7 +44,7 @@ namespace Link
 
         public AudioClientWrapper(SocketCommandContext Context) 
             => Task.Run(()
-                => Initialize(Context).ConfigureAwait(false));
+                => Initialize(Context));
 
         public async Task Initialize(SocketCommandContext Context)
         {
@@ -199,7 +199,7 @@ namespace Link
             }
         }
 
-        public async Task<IUserMessage> SendMusicEmbedAsync(ISocketMessageChannel channel)
+        public static async Task<IUserMessage> SendMusicEmbedAsync(ISocketMessageChannel channel)
         {
             var _embed = new EmbedBuilder()
                 .WithColor(Color.Blue)

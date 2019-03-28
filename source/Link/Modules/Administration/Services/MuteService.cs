@@ -98,7 +98,7 @@ namespace Link
 
             if (_record != null)
             {
-                await MuteNewUser(user);
+                await MuteNewUser(user).ConfigureAwait(false);
             }
         }
 

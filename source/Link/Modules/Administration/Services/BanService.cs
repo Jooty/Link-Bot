@@ -46,9 +46,13 @@ namespace Link
             }
 
             if (_didPardon)
+            {
                 await Respond.SendResponse(Context, $"User with ID `{id}` has been pardoned.");
+            }
             else
+            {
                 await Respond.SendResponse(Context, $"User with ID `{id}` has not been banned or forcebanned.");
+            }
         }
 
         public static async Task CheckNewUserForBan(IGuildUser user)

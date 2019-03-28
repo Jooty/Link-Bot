@@ -10,12 +10,12 @@ namespace Link
 {
     public class RandomCommands : ModuleBase<SocketCommandContext>
     {
+        public MiscService MiscService { get; set; }
+
         [Command("ping")]
         [Summary("Pings the bot.")]
-        public async Task PingCommand()
-        {
-            await Respond.SendResponse(Context, $"Pong! `{Context.Client.Latency}ms`");
-        }
+        public async Task PingCommand() 
+            => await Respond.SendResponse(Context, $"Pong! `{Context.Client.Latency}ms`");
 
         [Command("roll")]
         [Summary("Roll a dice in D&D style. Example: `1d20`")]

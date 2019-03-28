@@ -21,16 +21,24 @@ namespace Link
             // Create reason
             string _reason;
             if (reason == "")
+            {
                 _reason = $"{Context.User.Username}#{Context.User.Discriminator} kicked this user. No reason provided.";
+            }
             else
+            {
                 _reason = $"{Context.User.Username}#{Context.User.Discriminator} kicked this user for: {reason}";
+            }
 
             await (user as IGuildUser).KickAsync(_reason);
 
             if (reason == "")
+            {
                 await Respond.SendResponse(Context, $"Kicked user **{user.Username}#{user.Discriminator}**.");
+            }
             else
+            {
                 await Respond.SendResponse(Context, $"Kicked user **{user.Username}#{user.Discriminator}** for `{reason}`.");
+            }
         }
     }
 }

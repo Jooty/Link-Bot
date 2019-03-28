@@ -21,17 +21,26 @@ namespace Link
         public async Task BanCommand([RequireHierarchy]IUser user, string reason = "")
         {
             // Create reason
+            string _reason;
             if (reason == "")
-                reason = $"{Context.User.Username}#{Context.User.Discriminator} banned this user. No reason provided.";
+            {
+                _reason = $"{Context.User.Username}#{Context.User.Discriminator} banned this user. No reason provided.";
+            }
             else
-                reason = $"{Context.User.Username}#{Context.User.Discriminator} banned this user for: {reason}";
+            {
+                _reason = $"{Context.User.Username}#{Context.User.Discriminator} banned this user for: {reason}";
+            }
 
-            await Context.Guild.AddBanAsync(user, reason: reason);
+            await Context.Guild.AddBanAsync(user, reason: _reason);
 
             if (reason == "")
+            {
                 await Respond.SendResponse(Context, $"Banned user **{user.Username}#{user.Discriminator}**.");
+            }
             else
+            {
                 await Respond.SendResponse(Context, $"Banned user **{user.Username}#{user.Discriminator}** for reason: `{reason}`.");
+            }
         }
 
         [Command("forceban")]

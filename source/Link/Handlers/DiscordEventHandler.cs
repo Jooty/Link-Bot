@@ -13,32 +13,57 @@ namespace Link
     {
         public static async Task MessageDeleted(Cacheable<IMessage, ulong> msg, ISocketMessageChannel channel)
         {
-            if (msg.Value.Author.IsBot) return;
-            if (channel is IDMChannel) return;
+            if (msg.Value.Author.IsBot)
+            {
+                return;
+            }
+            if (channel is IDMChannel)
+            {
+                return;
+            }
 
             // Check to see if this isn't me
-            if (ClearService.CurrentClears.Contains(channel.Id)) return;
+            if (ClearService.CurrentClears.Contains(channel.Id))
+            {
+                return;
+            }
 
             var _channel = channel as IGuildChannel;
             var _logChannel = LogService.GetLogChannel(_channel.Guild.Id);
 
-            if (_logChannel == null) return;
+            if (_logChannel == null)
+            {
+                return;
+            }
 
-            await _logChannel.SendMessageAsync($":x: **MESSAGE DELETED:**  ({channel.Name}) {msg.Value.Author.Username}#{msg.Value.Author.Discriminator}| `{msg.Value.Content}`");
+            await _logChannel.SendMessageAsync(
+                $":x: **MESSAGE DELETED:**  ({channel.Name}) {msg.Value.Author.Username}#{msg.Value.Author.Discriminator}| `{msg.Value.Content}`");
         }
 
         public static async Task MessageUpdated(Cacheable<IMessage, ulong> oldMessage, SocketMessage newMessage, ISocketMessageChannel channel)
         {
-            if (oldMessage.Value.Author.IsBot) return;
-            if (channel is IDMChannel) return;
+            if (oldMessage.Value.Author.IsBot)
+            {
+                return;
+            }
+            if (channel is IDMChannel)
+            {
+                return;
+            }
 
             // If embed
-            if (oldMessage.Value.Attachments != newMessage.Attachments) return;
+            if (oldMessage.Value.Attachments != newMessage.Attachments)
+            {
+                return;
+            }
 
             var _channel = channel as IGuildChannel;
             var _logChannel = LogService.GetLogChannel(_channel.Guild.Id);
 
-            if (_logChannel == null) return;
+            if (_logChannel == null)
+            {
+                return;
+            }
 
             await _logChannel.SendMessageAsync($":pencil2: **MESSAGE UPDATED:** {oldMessage.Value.Author.Username}#{oldMessage.Value.Author.Discriminator} " +
                 $"  \nOLD: {oldMessage.Value.Content}" +
@@ -48,7 +73,10 @@ namespace Link
         public static async Task UserLeft(SocketGuildUser user)
         {
             var _logChannel = LogService.GetLogChannel(user.Guild.Id);
-            if (_logChannel == null) return;
+            if (_logChannel == null)
+            {
+                return;
+            }
 
             var _embed = new EmbedBuilder()
                 .WithTitle($"User left: {user.Username}#{user.Discriminator}")
@@ -67,7 +95,10 @@ namespace Link
             await BanService.CheckNewUserForBan(user);
 
             var _logChannel = LogService.GetLogChannel(user.Guild.Id);
-            if (_logChannel == null) return;
+            if (_logChannel == null)
+            {
+                return;
+            }
 
             var _embed = new EmbedBuilder()
                 .WithTitle($"User joined: {user.Username}#{user.Discriminator}")

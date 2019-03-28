@@ -15,9 +15,9 @@ namespace Link
         public static BotConfig Config;
 
         public static void Main(string[] args)
-            => new LinkBot().Init().GetAwaiter().GetResult();
+            => Init().GetAwaiter().GetResult();
 
-        public async Task Init()
+        public static async Task Init()
         {
             Config = BotConfigService.GetConfig();
 
@@ -63,7 +63,7 @@ namespace Link
             client.GuildMemberUpdated += DiscordEventHandler.GuildMemberUpdated;
         }
 
-        private async Task SetBotStatuses()
+        private static async Task SetBotStatuses()
         {
             var _config = BotConfigService.GetConfig();
 

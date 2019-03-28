@@ -38,9 +38,8 @@ namespace Link
 
         public static GameLeaderboardEntry[] GetGameLeaderboard(IGuild guild)
         {
-            var _records = Database.GetRecords<GameLeaderboardEntry>(s => s.Time.TotalMilliseconds != 0).ToArray();
-
-            return _records.Where(s => guild.GetUsersAsync().Result.Any(x => x.Id == s.EntryStats.UserId))
+            return Database.GetRecords<GameLeaderboardEntry>(s => s.Time.TotalMilliseconds != 0).ToArray()
+                .Where(s => guild.GetUsersAsync().Result.Any(x => x.Id == s.EntryStats.UserId))
                 .Where(s => s.Time.TotalMilliseconds > 0)
                 .ToArray();
         }
@@ -64,7 +63,10 @@ namespace Link
             {
                 foreach (var user in guild.Users)
                 {
-                    if (user.IsBot) continue;
+                    if (user.IsBot)
+                    {
+                        continue;
+                    }
 
                     var _curRecord = Database.GetRecord<VoiceLeaderboardEntry>(s => s.EntryStats.UserId == user.Id && s.EntryStats.GuildId == guild.Id);
                     if (_curRecord == null)
@@ -86,8 +88,10 @@ namespace Link
                         _curRecord = Database.GetRecord<VoiceLeaderboardEntry>(s => s.EntryStats.UserId == user.Id && s.EntryStats.GuildId == guild.Id);
                     }
 
-                    if (user.VoiceChannel == null) continue;
-                    if (user.VoiceChannel == guild.AFKChannel) continue;
+                    if (user.VoiceChannel == null || user.VoiceChannel == guild.AFKChannel)
+                    {
+                        continue;
+                    }
 
                     _curRecord.TotalTime = _curRecord.TotalTime.Add(TimeSpan.FromSeconds(1));
 
@@ -115,78 +119,44 @@ namespace Link
 
         private void UpdateAllUsersGame()
         {
-            try
+            List<ulong> _updatedUsers = new List<ulong>();
+
+            foreach (var guild in LinkBot.client.Guilds)
             {
-                List<ulong> _updatedUsers = new List<ulong>();
-
-                foreach (var guild in LinkBot.client.Guilds)
+                foreach (var user in guild.Users)
                 {
-                    foreach (var user in guild.Users)
+                    if (_updatedUsers.Contains(user.Id) || user.Activity == null || user.IsBot)
                     {
-                        if (_updatedUsers.Contains(user.Id)) continue;
-                        if (user.Activity == null) continue;
-                        if (user.IsBot) continue;
+                        continue;
+                    }
 
-                        var _curRecord = Database.GetRecord<GameLeaderboardEntry>(s => 
+                    var _curRecord = Database.GetRecord<GameLeaderboardEntry>(s =>
+                        s.EntryStats.UserId == user.Id
+                        && s.EntryStats.Game == user.Activity.Name);
+
+                    if (_curRecord == null)
+                    {
+                        Database.UpsertRecord(new GameLeaderboardEntry()
+                        {
+                            EntryStats = new GameLeaderboardEntry.Stats()
+                            {
+                                UserId = user.Id,
+                                Game = user.Activity.Name
+                            },
+                            Time = new TimeSpan()
+                        });
+
+                        _curRecord = Database.GetRecord<GameLeaderboardEntry>(s =>
                             s.EntryStats.UserId == user.Id
                             && s.EntryStats.Game == user.Activity.Name);
-
-                        if (_curRecord == null)
-                        {
-                            Database.UpsertRecord(new GameLeaderboardEntry()
-                            {
-                                EntryStats = new GameLeaderboardEntry.Stats()
-                                {
-                                    UserId = user.Id,
-                                    Game = user.Activity.Name
-                                },
-                                Time = new TimeSpan()
-                            });
-
-                            _curRecord = Database.GetRecord<GameLeaderboardEntry>(s => 
-                                s.EntryStats.UserId == user.Id
-                                && s.EntryStats.Game == user.Activity.Name);
-                        }
-
-                        _curRecord.Time = _curRecord.Time.Add(TimeSpan.FromSeconds(1));
-                        Database.UpsertRecord(_curRecord);
-
-                        _updatedUsers.Add(user.Id);
                     }
+
+                    _curRecord.Time = _curRecord.Time.Add(TimeSpan.FromSeconds(1));
+                    Database.UpsertRecord(_curRecord);
+
+                    _updatedUsers.Add(user.Id);
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-        }
-
-        public class VoiceLeaderboardEntry
-        {
-            public class Stats
-            {
-                public ulong UserId { get; set; }
-                public ulong GuildId { get; set; }
-            }
-            [BsonId]
-            public Stats EntryStats { get; set; }
-            public TimeSpan TotalTime { get; set; }
-            public TimeSpan TimeAwake { get; set; }
-            public TimeSpan TimeMuted { get; set; }
-            public TimeSpan TimeDeafened { get; set; }
-            public TimeSpan TimeServerMuted { get; set; }
-        }
-
-        public class GameLeaderboardEntry
-        {
-            public class Stats
-            {
-                public ulong UserId { get; set; }
-                public string Game { get; set; }
-            }
-            [BsonId]
-            public Stats EntryStats { get; set; }
-            public TimeSpan Time { get; set; }
         }
     }
 }

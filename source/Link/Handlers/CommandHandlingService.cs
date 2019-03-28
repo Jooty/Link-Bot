@@ -31,9 +31,10 @@ namespace Link
             .AddSingleton<MuteService>()
             .AddSingleton<AudioService>()
             .AddSingleton<TagService>()
+            .AddSingleton<MiscService>()
             .BuildServiceProvider();
 
-        public async Task InitializeAsync(DiscordSocketClient _client)
+        public static async Task InitializeAsync(DiscordSocketClient _client)
         {
             client = _client;
             commands = new CommandService();
@@ -46,7 +47,7 @@ namespace Link
             client.MessageReceived += HandleCommandAsync;
         }
 
-        private async Task HandleCommandAsync(SocketMessage messageParam)
+        private static async Task HandleCommandAsync(SocketMessage messageParam)
         {
             if (!(messageParam is SocketUserMessage message))
             {

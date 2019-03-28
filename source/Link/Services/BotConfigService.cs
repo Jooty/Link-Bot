@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Link
 {
-    public class BotConfigService
+    public static class BotConfigService
     {
         public static BotConfig GetConfig()
         {
