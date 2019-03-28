@@ -60,7 +60,7 @@ namespace Link
         [Command("8ball")]
         [Summary("Ask the 8-ball a question.")]
         public async Task Magic8Command([Remainder]string question = "")
-            => MiscService.Magic8Service(Context);
+            => await MiscService.Magic8Service(Context).ConfigureAwait(false);
 
         [Command("invite")]
         [Summary("Returns an invite to invite me anywhere.")]

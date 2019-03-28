@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using LiteDB;
 
 namespace Link
 {
     public class GuildConfig
     {
-        public ulong  ID           { get; set; }
-        public string Name         { get; set; }
-        public ulong  OwnerID      { get; set; }
-        public string OwnerName    { get; set; }
-        public ulong  LogChannelID { get; set; }
-        public bool   Log          { get; set; }
-        public ulong  MutedRoleID  { get; set; }
-        public ulong  DJRoleID     { get; set; }
+        [BsonId]    public ulong  ID           { get; set; }
+        [BsonField] public string Name         { get; set; }
+        [BsonField] public ulong  OwnerID      { get; set; }
+        [BsonField] public string OwnerName    { get; set; }
+        [BsonField] public ulong  LogChannelID { get; set; }
+        [BsonField] public bool   Log          { get; set; }
+        [BsonField] public ulong  MutedRoleID  { get; set; }
+        [BsonField] public ulong  DJRoleID     { get; set; }
 
-        public List<ulong> Forcebans { get; set; }
+        [BsonField] public List<ulong> Forcebans { get; set; }
     }
 }

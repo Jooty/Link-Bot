@@ -37,12 +37,12 @@ namespace Link
         [Command("forceban")]
         [Summary("Bans a user by ID. Works even when they're not in the server.")]
         public async Task ForcebanCommand(ulong id)
-            => BanService.ForcebanUser(Context, id);
+            => await BanService.ForcebanUser(Context, id).ConfigureAwait(false);
 
         [Command("pardon")]
         [Alias("unban")]
         [Summary("Pardons a user.")]
         public async Task PardonCommand(ulong id)
-            => BanService.PardonUser(Context, id);
+            => await BanService.PardonUser(Context, id).ConfigureAwait(false);
     }
 }

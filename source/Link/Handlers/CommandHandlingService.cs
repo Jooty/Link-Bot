@@ -17,8 +17,6 @@ namespace Link
         private static DiscordSocketClient client;
         private static IServiceProvider services;
 
-        private string prefix;
-
         public CommandHandlingService(DiscordSocketClient _client) =>
             InitializeAsync(_client).GetAwaiter().GetResult();
 
@@ -44,28 +42,19 @@ namespace Link
             await commands.AddModulesAsync(
                 assembly: Assembly.GetEntryAssembly(),
                 services: services);
-            client.MessageReceived += HandleCommandAsync;
 
-            foreach (var module in commands.Modules)
-            {
-                LogService.Log.Debug($"ADDED MODULE: {module.Name}");
-            }
+            client.MessageReceived += HandleCommandAsync;
         }
 
         private async Task HandleCommandAsync(SocketMessage messageParam)
         {
-            var message = messageParam as SocketUserMessage;
-            if (message == null) return;
-
+            if (!(messageParam is SocketUserMessage message)) return;
             int argPos = 0;
-
             if (!(message.HasStringPrefix(BotConfigService.GetPrefix(), ref argPos) ||
                 message.HasMentionPrefix(client.CurrentUser, ref argPos)) ||
                 message.Author.IsBot)
                 return;
-
             var context = new SocketCommandContext(client, message);
-
             var result = await commands.ExecuteAsync(
                 context: context,
                 argPos: argPos,
@@ -73,7 +62,6 @@ namespace Link
 
             // LOG
             LogService.Log.Information($"{context.User.Username}#{context.User.Discriminator}: {context.Message.Content}");
-
             var _record = new LogRecord()
             {
                 Date = DateTime.Now,
@@ -81,10 +69,6 @@ namespace Link
                 Log = $"COMMAND[{context.User.Username}{context.User.Discriminator}]: {context.Message}"
             };
             Database.UpsertRecord(_record);
-
-            // TEMP
-            if (!result.IsSuccess)
-                await context.Channel.SendMessageAsync($"`{result.ErrorReason}`");
         }
     }
 }

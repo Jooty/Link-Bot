@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -63,7 +61,7 @@ namespace Link
         {
             if (embedPages.Count() == 1) return;
 
-            var _client = Program.client;
+            var _client = LinkBot.client;
 
             _client.ReactionAdded += ReactionAdded;
         }

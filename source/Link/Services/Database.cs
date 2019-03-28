@@ -63,7 +63,7 @@ namespace Link
             // Get all configs
             var _configs = GetRecords<GuildConfig>(s => s.ID > 0);
 
-            foreach (var guild in Program.client.Guilds)
+            foreach (var guild in LinkBot.client.Guilds)
             {
                 var _record = _configs.FirstOrDefault(s => s.ID == guild.Id);
 

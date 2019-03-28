@@ -99,8 +99,7 @@ namespace Link
         public static async Task UserVoiceStateUpdated(SocketUser user, SocketVoiceState before, SocketVoiceState after)
         {
             // Get guild ID
-            var _guildUser = user as IGuildUser;
-            if (_guildUser == null) return;
+            if (!(user is IGuildUser _guildUser)) return;
 
             if (before.VoiceChannel == null && after.VoiceChannel != null) // If joins channel
             {
@@ -119,9 +118,7 @@ namespace Link
 
         public static async Task GuildMemberUpdated(SocketGuildUser before, SocketGuildUser after)
         {
-            IGuildUser _before = before as IGuildUser;
-            IGuildUser _after = after as IGuildUser;
-            if (_before == null || _after == null) return;
+            if (!(before is IGuildUser _before) || !(after is IGuildUser _after)) return;
 
             if (_before.RoleIds != _after.RoleIds) // Role removed or added
             {
@@ -140,9 +137,9 @@ namespace Link
 
         public static async Task ClientReady()
         {
-            LogService.Log.Information($"Connected as: {Program.client.CurrentUser.Username}#{Program.client.CurrentUser.Discriminator}");
+            LogService.Log.Information($"Connected as: {LinkBot.client.CurrentUser.Username}#{LinkBot.client.CurrentUser.Discriminator}");
 
-            new CommandHandlingService(Program.client);
+            new CommandHandlingService(LinkBot.client);
             new ConfirmationService();
             new LeaderboardService();
 

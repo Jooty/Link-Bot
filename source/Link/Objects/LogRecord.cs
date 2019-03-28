@@ -1,12 +1,12 @@
 using System;
+using LiteDB;
 
 namespace Link
 {
     public class LogRecord
     {
-        [LiteDB.BsonId]
-        public DateTime Date { get; set; }
-        public LogType Type { get; set; }
-        public string Log { get; set; }
+        [BsonId]    public DateTime Date { get; set; }
+        [BsonField] public LogType  Type { get; set; }
+        [BsonField] public string   Log  { get; set; }
     }
 }

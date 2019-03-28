@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Discord;
+using LiteDB;
 
 namespace Link
 {
@@ -11,14 +7,13 @@ namespace Link
     {
         public class TagStats
         {
-            public ulong GuildId { get; set; }
-            public string Alias { get; set; }
+            public ulong  GuildId { get; set; }
+            public string Alias   { get; set; }
         }
-        [LiteDB.BsonId]
-        public TagStats Stats { get; set; }
-        public string Message { get; set; }
-        public string CreatedBy { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public int TimesUsed { get; set; }
+        [BsonId]    public TagStats Stats     { get; set; }
+        [BsonField] public string Message     { get; set; }
+        [BsonField] public string CreatedBy   { get; set; }
+        [BsonField] public DateTime CreatedAt { get; set; }
+        [BsonField] public int TimesUsed      { get; set; }
     }
 }

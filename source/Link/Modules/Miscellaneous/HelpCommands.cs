@@ -18,14 +18,14 @@ namespace Link
             if (module == "")
             {
                 // List modules
-                var _pages = new List<PagedEmbed.EmbedPage>();
-                _pages.Add(new PagedEmbed.EmbedPage());
-
-                var _modules = CommandHandlingService.commands.Modules;
+                var _pages = new List<PagedEmbed.EmbedPage>
+                {
+                    new PagedEmbed.EmbedPage()
+                };
 
                 int _currentPage = 0;
                 int _perPageCounter = 0;
-                foreach (var _module in _modules)
+                foreach (var _module in CommandHandlingService.commands.Modules)
                 {
                     if (_perPageCounter == 7)
                     {
@@ -37,7 +37,7 @@ namespace Link
 
                     _perPageCounter++;
 
-                    _pages[_currentPage].Fields.Add(_module.Name, _module.Summary ?? "No summary.");
+                    _pages[_currentPage].Fields.Add(_module.Name, _module.Summary ?? "No description provided.");
                 }
 
                 new PagedEmbed(Context, _pages.ToArray(), "Help - All modules");
@@ -49,13 +49,15 @@ namespace Link
                 if (_module == null)
                 {
                     await Respond.SendResponse(Context,
-                        $"I could not find a module with the name `{module}`. You can use `>help` to get a full list of modules.");
+                        $"I could not find a module by the name `{module}`. You can use `>help` to get a full list of modules.");
                     return;
                 }
 
                 // List commands
-                var _pages = new List<PagedEmbed.EmbedPage>();
-                _pages.Add(new PagedEmbed.EmbedPage());
+                var _pages = new List<PagedEmbed.EmbedPage>
+                {
+                    new PagedEmbed.EmbedPage()
+                };
 
                 int _currentPage = 0;
                 int _perPageCounter = 0;
@@ -80,7 +82,7 @@ namespace Link
 
                     _pages[_currentPage]
                         .Fields
-                        .Add($"{command.Name} {_paramsBuilder.ToString()}", command.Summary ?? "No summary.");
+                        .Add($"{command.Name} {_paramsBuilder.ToString()}", command.Summary ?? "No description provided.");
                 }
 
                 new PagedEmbed(Context, _pages.ToArray(), $"Help - {_module.Name}");

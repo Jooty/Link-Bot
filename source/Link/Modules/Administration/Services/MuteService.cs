@@ -14,9 +14,7 @@ namespace Link
     {
         public static async Task Mute(SocketCommandContext Context, IGuildUser user)
         {
-            var _role = await GetOrCreateMutedRoleAsync(Context.Guild);
-
-            await user.AddRoleAsync(_role);
+            await user.AddRoleAsync(await GetOrCreateMutedRoleAsync(Context.Guild));
 
             await Respond.SendResponse(Context, $"Muted user **{user.Username}#{user.Discriminator}**.");
 
@@ -25,27 +23,22 @@ namespace Link
 
         public static async Task Mute(SocketCommandContext Context, ulong id)
         {
-            var _user = Context.Guild.GetUser(id);
-            if (_user == null)
+            if (Context.Guild.GetUser(id) == null)
             {
                 await Respond.SendResponse(Context, $"I could not find a user with the ID: `{id}`.");
                 return;
             }
 
-            var _role = await GetOrCreateMutedRoleAsync(Context.Guild);
+            await Context.Guild.GetUser(id).AddRoleAsync(await GetOrCreateMutedRoleAsync(Context.Guild));
 
-            await _user.AddRoleAsync(_role);
+            await Respond.SendResponse(Context, $"Muted user **{Context.Guild.GetUser(id).Username}#{Context.Guild.GetUser(id).Discriminator}**.");
 
-            await Respond.SendResponse(Context, $"Muted user **{_user.Username}#{_user.Discriminator}**.");
-
-            AddMute(_user);
+            AddMute(Context.Guild.GetUser(id));
         }
 
         public static async Task Mute(SocketCommandContext Context, IGuildUser user, string time)
         {
-            var _role = await GetOrCreateMutedRoleAsync(Context.Guild);
-
-            await user.AddRoleAsync(_role);
+            await user.AddRoleAsync(await GetOrCreateMutedRoleAsync(Context.Guild));
 
             var _time = Parse.Time(time);
 
@@ -162,9 +155,7 @@ namespace Link
 
         public static void RemoveMute(IGuildUser user)
         {
-            var _record = Database.GetRecord<MuteRecord>(s => s.GuildId == user.GuildId && s.UserId == user.Id);
-
-            if (_record != null)
+            if (Database.GetRecord<MuteRecord>(s => s.GuildId == user.GuildId && s.UserId == user.Id) != null)
             {
                 Database.DeleteRecord<MuteRecord>(s => s.GuildId == user.GuildId && s.UserId == user.Id);
             }
@@ -183,9 +174,7 @@ namespace Link
 
         public static void RemoveVoiceMute(ulong userId, ulong guildId)
         {
-            var _vRecord = Database.GetRecord<VoiceMuteRecord>(s => s.UserId == userId && s.GuildId == guildId);
-
-            if (_vRecord != null)
+            if (Database.GetRecord<VoiceMuteRecord>(s => s.UserId == userId && s.GuildId == guildId) != null)
             {
                 Database.DeleteRecord<VoiceMuteRecord>(s => s.UserId == userId && s.GuildId == guildId);
             }
@@ -238,14 +227,11 @@ namespace Link
 
         public static async Task UnmuteUserAsync(ulong guildId, ulong userId)
         {
-            var _guild = Program.client.GetGuild(guildId);
-            var _user = _guild.GetUser(userId);
+            if (LinkBot.client.GetGuild(guildId).GetUser(userId) == null || LinkBot.client.GetGuild(guildId) == null) return;
 
-            if (_user == null || _guild == null) return;
+            var _role = await GetOrCreateMutedRoleAsync(LinkBot.client.GetGuild(guildId));
 
-            var _role = await GetOrCreateMutedRoleAsync(_guild);
-
-            await _user.RemoveRoleAsync(_role);
+            await LinkBot.client.GetGuild(guildId).GetUser(userId).RemoveRoleAsync(_role);
 
             Database.DeleteRecord<MuteRecord>(s => s.GuildId == guildId && s.UserId == userId);
 

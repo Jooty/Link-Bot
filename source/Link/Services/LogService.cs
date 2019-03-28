@@ -27,12 +27,13 @@ namespace Link
 
             if (_record == null)
             {
-                LogService.Log.Warning($"Could not find guild configuration for guild: \"{guildId}\" when it was requested.");
-                return null;
+                var _guild = LinkBot.client.GetGuild(guildId);
+
+                Database.CreateDefaultGuildConfig(LinkBot.client.GetGuild(guildId), out _record);
             }
 
             if (!_record.Log || _record.LogChannelID == 0) return null;
-            else return Program.client.GetChannel(_record.LogChannelID) as ITextChannel;
+            else return LinkBot.client.GetChannel(_record.LogChannelID) as ITextChannel;
         }
     }
 }

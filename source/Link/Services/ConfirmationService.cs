@@ -25,7 +25,7 @@ namespace Link
 
         public ConfirmationService()
         {
-            client = Program.client;
+            client = LinkBot.client;
             instance = this;
 
             client.MessageReceived += Client_MessageReceived;

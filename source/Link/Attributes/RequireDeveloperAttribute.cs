@@ -20,7 +20,7 @@ namespace Link
                 return PreconditionResult.FromError("");
             }
 
-            if (Program.Config.DeveloperIDs.Any(s => s == _user.Id))
+            if (LinkBot.Config.DeveloperIDs.Any(s => s == _user.Id))
             {
                 return PreconditionResult.FromSuccess();
             }

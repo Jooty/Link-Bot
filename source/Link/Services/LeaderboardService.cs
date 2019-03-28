@@ -60,7 +60,7 @@ namespace Link
         {
             List<ulong> _seenUsers = new List<ulong>();
 
-            foreach (var guild in Program.client.Guilds)
+            foreach (var guild in LinkBot.client.Guilds)
             {
                 foreach (var user in guild.Users)
                 {
@@ -119,7 +119,7 @@ namespace Link
             {
                 List<ulong> _updatedUsers = new List<ulong>();
 
-                foreach (var guild in Program.client.Guilds)
+                foreach (var guild in LinkBot.client.Guilds)
                 {
                     foreach (var user in guild.Users)
                     {

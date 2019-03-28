@@ -11,20 +11,24 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>C:\Users\Jonathan\Desktop\Link-Bot\publish\</PublishUrl>
+    <Install>false</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <InstallUrl>http://localhost:8080/</InstallUrl>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -50,7 +54,20 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>130F173A4972349D494D77950D9FDD9D0F166A90</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Link_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Discord.Net.Commands, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -208,6 +225,7 @@
     <Compile Include="Attributes\RequireDJAttribute.cs" />
     <Compile Include="Attributes\RequireGuildOwnerAttribute.cs" />
     <Compile Include="Handlers\DiscordEventHandler.cs" />
+    <Compile Include="LinkBot.cs" />
     <Compile Include="Modules\Administration\BanCommands.cs" />
     <Compile Include="Modules\Administration\KickCommands.cs" />
     <Compile Include="Modules\Administration\MuteCommands.cs" />
@@ -230,6 +248,7 @@
     <Compile Include="Objects\Tag.cs" />
     <Compile Include="Services\BotConfigService.cs" />
     <Compile Include="Services\LeaderboardService.cs" />
+    <None Include="Link_TemporaryKey.pfx" />
     <None Include="Music\BASE">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -241,7 +260,6 @@
     <Compile Include="Objects\LogType.cs" />
     <Compile Include="Objects\MuteRecord.cs" />
     <Compile Include="Objects\VoiceMuteRecord.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Handlers\CommandHandlingService.cs" />
     <Compile Include="Services\ConfirmationService.cs" />

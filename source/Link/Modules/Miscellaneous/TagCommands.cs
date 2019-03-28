@@ -28,16 +28,16 @@ namespace Link
         [Command("edit")]
         [Summary("Edit a tag. Must have created the tag, or be an admin.")]
         public async Task TagEditCommand(string tag, [Remainder]string newMessage)
-            => await TagService.EditTag(Context, tag, newMessage);
+            => await TagService.EditTag(Context, tag, newMessage).ConfigureAwait(false);
 
         [Command("delete")]
         [Summary("Delete a tag. Must have created the tag, or be an admin.")]
         public async Task TagDeleteCommand(string tag)
-            => await TagService.DeleteTag(Context, tag);
+            => await TagService.DeleteTag(Context, tag).ConfigureAwait(false);
 
         [Command("stats")]
         [Summary("Returns all the information about a tag.")]
         public async Task TagStatsCommand(string tag)
-            => await TagService.TagStats(Context, tag);
+            => await TagService.TagStats(Context, tag).ConfigureAwait(false);
     }
 }

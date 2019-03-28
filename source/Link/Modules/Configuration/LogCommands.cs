@@ -18,6 +18,7 @@ namespace Link
         public async Task LogCommand()
         {
             var _config = Database.GetRecord<GuildConfig>(s => s.ID == Context.Guild.Id);
+            if (_config == null) Database.CreateDefaultGuildConfig(Context.Guild, out _config);
 
             _config.LogChannelID = Context.Channel.Id;
             _config.Log = !_config.Log;

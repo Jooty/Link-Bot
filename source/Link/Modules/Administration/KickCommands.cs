@@ -19,12 +19,13 @@ namespace Link
         public async Task KickCommand([RequireHierarchy]IUser user, string reason = "")
         {
             // Create reason
+            string _reason;
             if (reason == "")
-                reason = $"{Context.User.Username}#{Context.User.Discriminator} kicked this user. No reason provided.";
+                _reason = $"{Context.User.Username}#{Context.User.Discriminator} kicked this user. No reason provided.";
             else
-                reason = $"{Context.User.Username}#{Context.User.Discriminator} kicked this user for: {reason}";
+                _reason = $"{Context.User.Username}#{Context.User.Discriminator} kicked this user for: {reason}";
 
-            await (user as IGuildUser).KickAsync(reason);
+            await (user as IGuildUser).KickAsync(_reason);
 
             if (reason == "")
                 await Respond.SendResponse(Context, $"Kicked user **{user.Username}#{user.Discriminator}**.");

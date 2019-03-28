@@ -1,27 +1,23 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reactive;
-using System.Reactive.Linq;
 
 namespace Link
 {
-    public class Program
+    public class LinkBot
     {
         public static DiscordSocketClient client;
-
         public static BotConfig Config;
 
         public static void Main(string[] args)
-            => new Program().MainAsync().GetAwaiter().GetResult();
+            => new LinkBot().Init().GetAwaiter().GetResult();
 
-        public async Task MainAsync()
+        public async Task Init()
         {
             Config = BotConfigService.GetConfig();
 
@@ -31,20 +27,11 @@ namespace Link
             {
                 LogLevel = LogSeverity.Info,
                 MessageCacheSize = 10000,
-                AlwaysDownloadUsers = true
+                AlwaysDownloadUsers = true,
+                DefaultRetryMode = RetryMode.AlwaysRetry
             });
 
-            // Events
-            client.Log += DiscordEventHandler.Log;
-            client.MessageDeleted += DiscordEventHandler.MessageDeleted;
-            client.MessageUpdated += DiscordEventHandler.MessageUpdated;
-            client.UserJoined += DiscordEventHandler.UserJoined;
-            client.UserLeft += DiscordEventHandler.UserLeft;
-            client.Ready += DiscordEventHandler.ClientReady;
-            client.JoinedGuild += DiscordEventHandler.JoinedGuild;
-            client.LeftGuild += DiscordEventHandler.LeftGuild;
-            client.UserVoiceStateUpdated += DiscordEventHandler.UserVoiceStateUpdated;
-            client.GuildMemberUpdated += DiscordEventHandler.GuildMemberUpdated;
+            SetupEvents();
 
             // Begin invoke of database mute timers
             IDisposable databaseMuteTimers =
@@ -57,9 +44,23 @@ namespace Link
             await client.LoginAsync(TokenType.Bot, Config.Token);
             await client.StartAsync();
 
-            SetBotStatuses().ConfigureAwait(false);
+            await SetBotStatuses().ConfigureAwait(false);
 
             await Task.Delay(-1);
+        }
+
+        private void SetupEvents()
+        {
+            client.Log += DiscordEventHandler.Log;
+            client.MessageDeleted += DiscordEventHandler.MessageDeleted;
+            client.MessageUpdated += DiscordEventHandler.MessageUpdated;
+            client.UserJoined += DiscordEventHandler.UserJoined;
+            client.UserLeft += DiscordEventHandler.UserLeft;
+            client.Ready += DiscordEventHandler.ClientReady;
+            client.JoinedGuild += DiscordEventHandler.JoinedGuild;
+            client.LeftGuild += DiscordEventHandler.LeftGuild;
+            client.UserVoiceStateUpdated += DiscordEventHandler.UserVoiceStateUpdated;
+            client.GuildMemberUpdated += DiscordEventHandler.GuildMemberUpdated;
         }
 
         private async Task SetBotStatuses()
