@@ -12,26 +12,26 @@ namespace Link
     {
         public static BotConfig GetConfig()
         {
-            return JsonConvert.DeserializeObject<BotConfig>(File.ReadAllText(@"Resources/Config.json"));
+            return JsonConvert.DeserializeObject<BotConfig>(File.ReadAllText($@"{Directory.GetCurrentDirectory()}/Resources/Config.json"));
         }
 
         public static void SetPrefix(string newPrefix)
         {
-            var _config = JsonConvert.DeserializeObject<BotConfig>(File.ReadAllText(@"Resources/Config.json"));
+            var _config = GetConfig();
 
             _config.Prefix = newPrefix;
         }
 
         public static string GetPrefix()
         {
-            var _config = JsonConvert.DeserializeObject<BotConfig>(File.ReadAllText(@"Resources/Config.json"));
+            var _config = GetConfig();
 
             return _config.Prefix;
         }
 
         public static void SetDefaultStatus(int newStatus)
         {
-            var _config = JsonConvert.DeserializeObject<BotConfig>(File.ReadAllText(@"Resources/Config.json"));
+            var _config = GetConfig();
 
             _config.DefaultStatus = newStatus;
 
@@ -40,7 +40,7 @@ namespace Link
 
         public static void SetDefaultActivity(int index, string activity)
         {
-            var _config = JsonConvert.DeserializeObject<BotConfig>(File.ReadAllText(@"Resources/Config.json"));
+            var _config = GetConfig();
 
             _config.DefaultActivity = $"{index}|{activity}";
 
