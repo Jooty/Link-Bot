@@ -49,7 +49,7 @@ namespace Link
             await Task.Delay(-1);
         }
 
-        private void SetupEvents()
+        private static void SetupEvents()
         {
             client.Log += DiscordEventHandler.Log;
             client.MessageDeleted += DiscordEventHandler.MessageDeleted;

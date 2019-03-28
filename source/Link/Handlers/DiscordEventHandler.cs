@@ -99,7 +99,10 @@ namespace Link
         public static async Task UserVoiceStateUpdated(SocketUser user, SocketVoiceState before, SocketVoiceState after)
         {
             // Get guild ID
-            if (!(user is IGuildUser _guildUser)) return;
+            if (!(user is IGuildUser _guildUser))
+            {
+                return;
+            }
 
             if (before.VoiceChannel == null && after.VoiceChannel != null) // If joins channel
             {
@@ -118,7 +121,10 @@ namespace Link
 
         public static async Task GuildMemberUpdated(SocketGuildUser before, SocketGuildUser after)
         {
-            if (!(before is IGuildUser _before) || !(after is IGuildUser _after)) return;
+            if (!(before is IGuildUser _before) || !(after is IGuildUser _after))
+            {
+                return;
+            }
 
             if (_before.RoleIds != _after.RoleIds) // Role removed or added
             {

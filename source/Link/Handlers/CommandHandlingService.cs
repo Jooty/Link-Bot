@@ -48,7 +48,10 @@ namespace Link
 
         private async Task HandleCommandAsync(SocketMessage messageParam)
         {
-            if (!(messageParam is SocketUserMessage message)) return;
+            if (!(messageParam is SocketUserMessage message))
+            {
+                return;
+            }
             int argPos = 0;
             if (!(message.HasStringPrefix(BotConfigService.GetPrefix(), ref argPos) ||
                 message.HasMentionPrefix(client.CurrentUser, ref argPos)) ||

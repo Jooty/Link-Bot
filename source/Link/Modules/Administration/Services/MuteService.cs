@@ -29,7 +29,8 @@ namespace Link
                 return;
             }
 
-            await Context.Guild.GetUser(id).AddRoleAsync(await GetOrCreateMutedRoleAsync(Context.Guild));
+            await Context.Guild.GetUser(id).AddRoleAsync(await GetOrCreateMutedRoleAsync(Context.Guild)).
+                ConfigureAwait(false);
 
             await Respond.SendResponse(Context, $"Muted user **{Context.Guild.GetUser(id).Username}#{Context.Guild.GetUser(id).Discriminator}**.");
 
@@ -38,7 +39,8 @@ namespace Link
 
         public static async Task Mute(SocketCommandContext Context, IGuildUser user, string time)
         {
-            await user.AddRoleAsync(await GetOrCreateMutedRoleAsync(Context.Guild));
+            await user.AddRoleAsync(await GetOrCreateMutedRoleAsync(Context.Guild))
+                .ConfigureAwait(false);
 
             var _time = Parse.Time(time);
 
@@ -227,9 +229,13 @@ namespace Link
 
         public static async Task UnmuteUserAsync(ulong guildId, ulong userId)
         {
-            if (LinkBot.client.GetGuild(guildId).GetUser(userId) == null || LinkBot.client.GetGuild(guildId) == null) return;
+            if (LinkBot.client.GetGuild(guildId).GetUser(userId) == null || LinkBot.client.GetGuild(guildId) == null)
+            {
+                return;
+            }
 
-            var _role = await GetOrCreateMutedRoleAsync(LinkBot.client.GetGuild(guildId));
+            var _role = await GetOrCreateMutedRoleAsync(LinkBot.client.GetGuild(guildId))
+                .ConfigureAwait(false);
 
             await LinkBot.client.GetGuild(guildId).GetUser(userId).RemoveRoleAsync(_role);
 
