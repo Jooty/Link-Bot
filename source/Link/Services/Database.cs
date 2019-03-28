@@ -116,7 +116,7 @@ namespace Link
             if (_djRole != null)
                 _djRoleID = _djRole.Id;
 
-            GuildConfig _config = new GuildConfig()
+            GuildConfig _config = new GuildConfig
             {
                 ID = guild.Id,
                 Name = guild.Name,

@@ -16,13 +16,11 @@ namespace Link
         public LeaderboardService()
         {
             // Begin invoke
-            IDisposable addVoiceTimer =
-                Observable
+            Observable
                     .Interval(TimeSpan.FromSeconds(1))
                     .Subscribe(x => UpdateAllUsersVoice());
 
-            IDisposable addGameTimer =
-                Observable
+            Observable
                     .Interval(TimeSpan.FromSeconds(1))
                     .Subscribe(x => UpdateAllUsersGame());
         }
@@ -63,7 +61,7 @@ namespace Link
             {
                 foreach (var user in guild.Users)
                 {
-                    if (user.IsBot)
+                    if (user.IsBot || _seenUsers.Contains(user.Id))
                     {
                         continue;
                     }
@@ -113,6 +111,7 @@ namespace Link
                     }
 
                     Database.UpsertRecord(_curRecord);
+                    _seenUsers.Add(user.Id);
                 }
             }
         }

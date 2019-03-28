@@ -43,13 +43,15 @@ namespace Link
         private Process ffmpeg;
 
         public AudioClientWrapper(SocketCommandContext Context) 
-            => Task.Run(()
-                => Initialize(Context));
+            => Task.Run(() => Initialize(Context));
 
         public async Task Initialize(SocketCommandContext Context)
         {
             var _voiceState = Context.User as IVoiceState;
-            if (_voiceState.VoiceChannel == null) return;
+            if (_voiceState.VoiceChannel == null)
+            {
+                return;
+            }
 
             context = Context;
             PlayerMessage = await SendMusicEmbedAsync(Context.Channel);
@@ -207,10 +209,6 @@ namespace Link
                 .WithDescription("Not playing anything! Use `>play <link/search>`.");
 
             var _message = await channel.SendMessageAsync("", false, _embed.Build());
-
-            //await _message.AddReactionAsync(playEmoji);
-            //await _message.AddReactionAsync(pauseEmoji);
-            //await _message.AddReactionAsync(ffEmoji);
 
             return _message;
         }

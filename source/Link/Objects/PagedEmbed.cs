@@ -51,7 +51,10 @@ namespace Link
 
         private void SetupReactions()
         {
-            if (embedPages.Count() == 1) return;
+            if (embedPages.Count() == 1)
+            {
+                return;
+            }
 
             myEmbedMessage.AddReactionAsync(backEmoji);
             myEmbedMessage.AddReactionAsync(forwardEmoji);
@@ -59,7 +62,10 @@ namespace Link
 
         private void SetupEvents()
         {
-            if (embedPages.Count() == 1) return;
+            if (embedPages.Count() == 1)
+            {
+                return;
+            }
 
             var _client = LinkBot.client;
 
@@ -68,15 +74,20 @@ namespace Link
 
         private async Task ReactionAdded(Cacheable<IUserMessage, ulong> msg, ISocketMessageChannel channel, SocketReaction reaction)
         {
-            if (msg.Value.Id != myEmbedMessage.Id) return;
-            if (reaction.User.Value != controller) return;
+            if (msg.Value.Id != myEmbedMessage.Id || reaction.User.Value != controller)
+            {
+                return;
+            }
 
             var _embed = new EmbedBuilder()
                 .WithColor(Color.Blue);
 
             if (reaction.Emote.Equals(backEmoji))
             {
-                if (currentPage - 1 < 0) return;
+                if (currentPage - 1 < 0)
+                {
+                    return;
+                }
 
                 currentPage--;
 
@@ -91,7 +102,10 @@ namespace Link
             }
             else if (reaction.Emote.Equals(forwardEmoji))
             {
-                if (currentPage + 1 > embedPages.Length) return;
+                if (currentPage + 1 > embedPages.Length)
+                {
+                    return;
+                }
 
                 currentPage++;
 

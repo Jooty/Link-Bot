@@ -36,10 +36,7 @@ namespace Link
             var _entry = new ConfirmEntry(Context.User);
             awaitingReplies.Add(_entry);
 
-            while (!_entry.HasReplied)
-            {
-                continue;
-            }
+            while (!_entry.HasReplied) { }
 
             if (_entry.Reply == "yes")
             {

@@ -34,8 +34,7 @@ namespace Link
             SetupEvents();
 
             // Begin invoke of database mute timers
-            IDisposable databaseMuteTimers =
-                Observable
+            Observable
                     .Interval(TimeSpan.FromSeconds(1))
                     #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     .Subscribe(x => MuteService.UpdateDatabaseTimers());

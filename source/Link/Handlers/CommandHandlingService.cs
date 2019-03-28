@@ -18,7 +18,7 @@ namespace Link
         private static IServiceProvider services;
 
         public CommandHandlingService(DiscordSocketClient _client) =>
-            InitializeAsync(_client).GetAwaiter().GetResult();
+            InitializeAsync(_client).GetAwaiter();
 
         public static IServiceProvider BuildServiceProvider() => new ServiceCollection()
             .AddSingleton(client)
@@ -59,7 +59,7 @@ namespace Link
                 message.Author.IsBot)
                 return;
             var context = new SocketCommandContext(client, message);
-            var result = await commands.ExecuteAsync(
+            await commands.ExecuteAsync(
                 context: context,
                 argPos: argPos,
                 services: services);
