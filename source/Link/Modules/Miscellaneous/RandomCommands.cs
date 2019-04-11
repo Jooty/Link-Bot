@@ -57,6 +57,12 @@ namespace Link
             await Respond.SendResponse(Context, $"{(_r == 0 ? "Heads" : "Tails")}.");
         }
 
+        [Command("random")]
+        public async Task RandomCommand(int one, int two)
+        {
+            await Respond.SendResponse(Context, new Random().Next(one, two).ToString());
+        }
+
         [Command("8ball")]
         [Summary("Ask the 8-ball a question.")]
         public async Task Magic8Command([Remainder]string question = "")
