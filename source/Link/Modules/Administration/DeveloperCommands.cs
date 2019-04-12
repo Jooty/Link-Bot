@@ -17,7 +17,7 @@ using Newtonsoft.Json;
 
 namespace Link
 {
-    [RequireDeveloper]
+    [RequireOwner]
     public class DeveloperCommands
     {
         public DeveloperService DevService { get; set; }
