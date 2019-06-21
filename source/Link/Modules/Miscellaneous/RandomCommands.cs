@@ -63,6 +63,14 @@ namespace Link
             await Respond.SendResponse(Context, new Random().Next(one, two).ToString());
         }
 
+        [Command("pfp")]
+        public async Task PFPCommand(IUser user)
+        {
+            await ReplyAsync("", false, new EmbedBuilder()
+                .WithColor(Color.Blue)
+                .WithImageUrl(user.GetAvatarUrl()).Build());
+        }
+
         [Command("8ball")]
         [Summary("Ask the 8-ball a question.")]
         public async Task Magic8Command([Remainder]string question = "")
