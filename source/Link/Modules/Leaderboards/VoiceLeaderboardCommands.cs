@@ -49,7 +49,7 @@ namespace Link
 
             var _embed = new EmbedBuilder()
                 .WithColor(Color.Blue)
-                .WithTitle($"Hours in voice: \"{_user.Username}\" for \"{Context.Guild.Name}\"")
+                .WithTitle($"Hours in voice: {_user.Username} for {Context.Guild.Name}")
                 .WithDescription($"Total: `{Math.Round(_userRec.TotalTime.TotalHours), 2}` hours" +
                     $"\nTime Awake: `{Math.Round(_userRec.TimeAwake.TotalHours), 2}` hours" +
                     $"\nTime Muted: `{Math.Round(_userRec.TimeMuted.TotalHours), 2}` hours" +

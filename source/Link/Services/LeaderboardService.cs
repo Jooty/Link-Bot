@@ -61,7 +61,10 @@ namespace Link
             {
                 foreach (var user in guild.Users)
                 {
-                    if (user.IsBot || _seenUsers.Contains(user.Id))
+                    if (user.IsBot 
+                        || _seenUsers.Contains(user.Id) 
+                        || user.VoiceChannel == null
+                        || user.VoiceChannel == guild.AFKChannel)
                     {
                         continue;
                     }
@@ -69,7 +72,7 @@ namespace Link
                     var _curRecord = Database.GetRecord<VoiceLeaderboardEntry>(s => s.EntryStats.UserId == user.Id && s.EntryStats.GuildId == guild.Id);
                     if (_curRecord == null)
                     {
-                        Database.UpsertRecord(new VoiceLeaderboardEntry()
+                        VoiceLeaderboardEntry _newEntry = new VoiceLeaderboardEntry()
                         {
                             EntryStats = new VoiceLeaderboardEntry.Stats()
                             {
@@ -81,14 +84,10 @@ namespace Link
                             TimeMuted = new TimeSpan(),
                             TimeDeafened = new TimeSpan(),
                             TimeServerMuted = new TimeSpan()
-                        });
+                        };
 
-                        _curRecord = Database.GetRecord<VoiceLeaderboardEntry>(s => s.EntryStats.UserId == user.Id && s.EntryStats.GuildId == guild.Id);
-                    }
-
-                    if (user.VoiceChannel == null || user.VoiceChannel == guild.AFKChannel)
-                    {
-                        continue;
+                        Database.UpsertRecord(_newEntry);
+                        _curRecord = _newEntry;
                     }
 
                     _curRecord.TotalTime = _curRecord.TotalTime.Add(TimeSpan.FromSeconds(1));
